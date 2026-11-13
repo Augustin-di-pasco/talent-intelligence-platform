@@ -4,7 +4,7 @@ services:
     runtime: node
     region: frankfurt
     plan: starter
-    buildCommand: unzip -oq ZERILYS_TALENT_INTELLIGENCE_1.9.0-alpha.20.zip && cd zeri_work18 && npm install --omit=dev --no-audit --no-fund
+    buildCommand: unzip -oq ZERILYS.zip && cd zeri_work18 && npm install --omit=dev --no-audit --no-fund
     startCommand: cd zeri_work18 && npm start
     healthCheckPath: /api/health
     disk:
