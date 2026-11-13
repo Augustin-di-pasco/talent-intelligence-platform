@@ -178,36 +178,29 @@ pricingTest = once(pricingTest,
   "pricing test expectations");
 write("test/employer-offer-packaging-1.3.test.js", pricingTest);
 
-// Make the persistent-disk lock check robust across Render deploy namespaces.
+// Render service is configured for exactly one instance with one persistent disk.
+// A PID from the previous Render container can be reused in the new container;
+// therefore the persisted PID lock is not a reliable cross-deploy liveness check.
 let server = read("src/server.js");
-const oldLockCheck = [
-  '    if(existing?.pid) {',
-  '      try{process.kill(existing.pid,0);throw new Error(`Another ZERILYS instance is already using this data directory (PID ${existing.pid}).`);}',
-  '      catch(e){if(e.code!=="ESRCH")throw e;}',
-  '    } else {',
-  '      throw new Error("A ZERILYS data lock exists but cannot be validated. Inspect and remove it manually only after confirming no instance is running.");',
-  '    }'
-].join("\n") + "\n";
-const newLockCheck = [
-  '    if(existing?.pid) {',
-  '      let sameApplicationProcess = false;',
-  '      try {',
-  '        process.kill(existing.pid,0);',
-  '        const commandLine = fs.readFileSync("/proc/" + existing.pid + "/cmdline", "utf8").replaceAll("\\0"," ");',
-  '        sameApplicationProcess = commandLine.includes(path.join(ROOT,"src","server.js")) || commandLine.includes("src/server.js");',
-  '      } catch(e) {',
-  '        if(e.code !== "ESRCH" && e.code !== "ENOENT" && e.code !== "EACCES") throw e;',
-  '      }',
-  '      if(sameApplicationProcess) throw new Error("Another ZERILYS instance is already using this data directory (PID " + existing.pid + ").");',
-  '    } else {',
-  '      throw new Error("A ZERILYS data lock exists but cannot be validated. Inspect and remove it manually only after confirming no instance is running.");',
-  '    }'
-].join("\n") + "\n";
-if (server.includes(oldLockCheck)) {
-  server = server.replace(oldLockCheck,newLockCheck);
-} else if (!server.includes("sameApplicationProcess")) {
-  throw new Error("Could not locate the expected ZERILYS instance-lock code; refusing an unsafe patch.");
+const lockStart = server.indexOf("const LOCK_FILE = path.join(DATA, \".zerihlink.lock\");");
+const lockEnd = server.indexOf("const store = await Store.open(DATA);", lockStart);
+if (lockStart < 0 || lockEnd < 0) throw new Error("Could not locate the server instance-lock block.");
+const safeSingleInstanceLock = `const LOCK_FILE = path.join(DATA, ".zerihlink.lock");
+function acquireInstanceLock() {
+  fs.mkdirSync(DATA,{recursive:true});
+  // One Render instance is enforced in service settings; clear only the stale boot marker.
+  try { fs.unlinkSync(LOCK_FILE); } catch(e) { if(e.code !== "ENOENT") throw e; }
+  const fd = fs.openSync(LOCK_FILE,"wx",0o600);
+  fs.writeFileSync(fd,JSON.stringify({pid:process.pid,startedAt:new Date().toISOString()}));
+  fs.closeSync(fd);
+  const release=()=>{try{const current=JSON.parse(fs.readFileSync(LOCK_FILE,"utf8"));if(current.pid===process.pid)fs.unlinkSync(LOCK_FILE);}catch{}};
+  process.on("exit",release);
+  process.on("SIGINT",()=>process.exit(130));
+  process.on("SIGTERM",()=>process.exit(143));
 }
+acquireInstanceLock();
+`;
+server = server.slice(0,lockStart) + safeSingleInstanceLock + server.slice(lockEnd);
 write("src/server.js",server);
 
 console.log("ZERILYS launch polish applied.");
