@@ -180,27 +180,29 @@ write("test/employer-offer-packaging-1.3.test.js", pricingTest);
 
 // Make the persistent-disk lock check robust across Render deploy namespaces.
 let server = read("src/server.js");
-const oldLockCheck = `    if(existing?.pid) {
-      try{process.kill(existing.pid,0);throw new Error(`Another ZERILYS instance is already using this data directory (PID ${existing.pid}).`);}
-      catch(e){if(e.code!=="ESRCH")throw e;}
-    } else {
-      throw new Error("A ZERILYS data lock exists but cannot be validated. Inspect and remove it manually only after confirming no instance is running.");
-    }
-`;
-const newLockCheck = `    if(existing?.pid) {
-      let sameApplicationProcess = false;
-      try {
-        process.kill(existing.pid,0);
-        const commandLine = fs.readFileSync(`/proc/${existing.pid}/cmdline`, "utf8").replaceAll("\\0"," ");
-        sameApplicationProcess = commandLine.includes(path.join(ROOT,"src","server.js")) || commandLine.includes("src/server.js");
-      } catch(e) {
-        if(e.code !== "ESRCH" && e.code !== "ENOENT" && e.code !== "EACCES") throw e;
-      }
-      if(sameApplicationProcess) throw new Error(`Another ZERILYS instance is already using this data directory (PID ${existing.pid}).`);
-    } else {
-      throw new Error("A ZERILYS data lock exists but cannot be validated. Inspect and remove it manually only after confirming no instance is running.");
-    }
-`;
+const oldLockCheck = [
+  '    if(existing?.pid) {',
+  '      try{process.kill(existing.pid,0);throw new Error(`Another ZERILYS instance is already using this data directory (PID ${existing.pid}).`);}',
+  '      catch(e){if(e.code!=="ESRCH")throw e;}',
+  '    } else {',
+  '      throw new Error("A ZERILYS data lock exists but cannot be validated. Inspect and remove it manually only after confirming no instance is running.");',
+  '    }'
+].join("\\n") + "\\n";
+const newLockCheck = [
+  '    if(existing?.pid) {',
+  '      let sameApplicationProcess = false;',
+  '      try {',
+  '        process.kill(existing.pid,0);',
+  '        const commandLine = fs.readFileSync("/proc/" + existing.pid + "/cmdline", "utf8").replaceAll("\\0"," ");',
+  '        sameApplicationProcess = commandLine.includes(path.join(ROOT,"src","server.js")) || commandLine.includes("src/server.js");',
+  '      } catch(e) {',
+  '        if(e.code !== "ESRCH" && e.code !== "ENOENT" && e.code !== "EACCES") throw e;',
+  '      }',
+  '      if(sameApplicationProcess) throw new Error("Another ZERILYS instance is already using this data directory (PID " + existing.pid + ").");',
+  '    } else {',
+  '      throw new Error("A ZERILYS data lock exists but cannot be validated. Inspect and remove it manually only after confirming no instance is running.");',
+  '    }'
+].join("\\n") + "\\n";
 if (server.includes(oldLockCheck)) {
   server = server.replace(oldLockCheck,newLockCheck);
 } else if (!server.includes("sameApplicationProcess")) {
