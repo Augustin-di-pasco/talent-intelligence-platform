@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: zerilys-platform
+    runtime: node
+    region: frankfurt
+    plan: starter
+    buildCommand: unzip -oq ZERILYS_TALENT_INTELLIGENCE_1.9.0-alpha.20.zip && cd zeri_work18 && npm install --omit=dev --no-audit --no-fund
+    startCommand: cd zeri_work18 && npm start
+    healthCheckPath: /api/health
+    disk:
+      name: zerilys-data
+      mountPath: /opt/render/project/src/zeri_work18/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: ZERIHLINK_DATA_DIR
+        value: /opt/render/project/src/zeri_work18/data
+      - key: ZERIHLINK_BACKUP_RETENTION
+        value: "14"
+      - key: ZERIHLINK_TRUST_PROXY
+        value: "true"
+      - key: ZERIHLINK_SESSION_SECRET
+        generateValue: true
+      - key: ZERIHLINK_ALLOW_SIGNUP
+        value: "false"
+      - key: ZERIHLINK_BETA_LEGAL_APPROVED
+        value: "false"
