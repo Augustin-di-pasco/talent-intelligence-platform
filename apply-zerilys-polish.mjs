@@ -187,7 +187,7 @@ const oldLockCheck = [
   '    } else {',
   '      throw new Error("A ZERILYS data lock exists but cannot be validated. Inspect and remove it manually only after confirming no instance is running.");',
   '    }'
-].join("\\n") + "\\n";
+].join("\n") + "\n";
 const newLockCheck = [
   '    if(existing?.pid) {',
   '      let sameApplicationProcess = false;',
@@ -202,7 +202,7 @@ const newLockCheck = [
   '    } else {',
   '      throw new Error("A ZERILYS data lock exists but cannot be validated. Inspect and remove it manually only after confirming no instance is running.");',
   '    }'
-].join("\\n") + "\\n";
+].join("\n") + "\n";
 if (server.includes(oldLockCheck)) {
   server = server.replace(oldLockCheck,newLockCheck);
 } else if (!server.includes("sameApplicationProcess")) {
