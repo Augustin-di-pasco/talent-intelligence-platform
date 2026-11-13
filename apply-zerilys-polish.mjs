@@ -214,11 +214,12 @@ const privacyNotice = gunzipSync(Buffer.from("H4sICOmJ92oCA3ByaXZhY3ktbm90aWNlLm
 const legalNotice = gunzipSync(Buffer.from("H4sICOmJ92oCA2xlZ2FsLW5vdGljZS5odG1sAKVVzXLjRBC+71M04gJVsiU7f44jqzDZLLjKm6TicIALNZZa0rCjGTEzcmy2UrXX3Llw44ifgDt6k30SeiQ7PyycOLgsTfd83d/XP4o+S1ViNxVCYUsRv4rcHwgm84mXaS+OCmRpHJVoGSQF0wbtxKtt1ht5u1PJSpx4K453ldLWg0RJi5K87nhqi0mKK55gr33xueSWM9EzCRM4GbyE0GqprHkGwGWKaz9TQqg7crXcCox/uLiZzb9fwMcPv8JbcuNKGhDNNidEEwWdUyS4fAcaxcQzdkOGApFSKzRmEy/ojvqJMYTavsRLlW7el2zd5Tk+DcNqfVYynXM5DoHVVp1VLE25zMeHo2oNw0OyJ0ooPf48XeIoOzyjkNgrkOeFHQ/6J0f3xcAvhu93TphlJ1myg+xZVZHPMZb3bO8wyjBMh/dRl10cBa3wryKXWRxVkAhmzMTDDS61k2OvQwCzyzdXN2+nt7OrywXMm4dvpvOLRRRUVLtB/C8S0WlUxa9RS978oRFKbhCa3+EnVWsYw+AApFphuSTTMBweOyRqi2HcPKTcIvmkNRh6IqShQyIJtZJ5PK3z2lgu4Xq6OL+aXzkqrcEHSkJjpVG661RWvuJpjcKnSCXVuyxRJ9QX8AhFADfEB86n17Pb6fwRKlrqeDG7ubikREcHIwhPj+HgONwf3748hjAMh0NnnKYaDdGstMrogRSRKASS+xCYIG0QLjlVghm4VjU5SB9ORsNBCAvGpe2db3RPfPzwW/NATujDG81kgg75nFTTHAVBRWzXYSXjwqrxL6i52JivcvfeJ5pe/MlRFLCW1GuuMenURRo/qOql4AlztSPkf0rbfyzKt812iTrHkiTeF+QGaXA0LFC70TM+zGTSd0GOhkfwNWUumYQFVQStD4uaSgkHYachGVpq3CTKJ/Xh9HAQnvjQPFhmTe87yU3r5+48I1xYW5lxEOg2suMVeGCp1922+HFJ6+Sd142jVKqiNqDN8uS712COYLqcgVVVRz9zelDV0jpptUBjIW22lVCbZgspc53NQFNzOyv5tulntIngiylVuGS5xC+f9LrWqtK82Vq6TYV1TZDY2v3t1ZszoCn9uUbYjZgPrvJMJwWxJmdN9adBAqFynlDlTfdqcW1x99xsqaVcSQzkmlUFJzgDaFsjbRP90qdySbWWdrDA0AZ0h5Rk3mzJznR7M9WKk3unyH/Q2Eu3dCsOblVNeG72HhVUtZOrtlxw0/WXpJ9bcZobNwhOYoep3bj3YU6Bu5Vcm64tn6dUtovCUAjjljalTl7C9TGdVLR42JICuTSJfUptSvJ1brR2KOr6GSl3jXTkthaMxsE8Ve2c4rPkscGv3aayLTUnbEuCuovYrHAvou9WGgm5z93x3p1kSrZSyHZq/sfg7hKkFbgHCJb0PeuRdqXpuy+p51InHdsVnFIbPdPdIcBffz5FD6ikK5ZselJZGoIdwLUi/VwDOYmITMZTt9NZq+qnGB6Nv3X6ENldA7fz5b4HQfcxCdpP/d/uPnDB+gcAAA==","base64")).toString("utf8");
 write("public/beta-terms.html", legalTerms);
 write("public/privacy-notice.html", privacyNotice);
-write("public/legal-notice.html", legalNotice);
+write("public/legal-notice.html", legalNotice.replace("<br>Le service applicatif", '<br>Contact de l’hébergeur : <a href="mailto:support@render.com">support@render.com</a> · <a href="https://render.com/contact" target="_blank" rel="noopener">Portail de support</a><br>Le service applicatif'));
 
 let launchHtml = read("public/index.html");
 if (!launchHtml.includes('href="/legal-notice.html"')) launchHtml = launchHtml.replace("</footer>", '<nav class="legal-footer" aria-label="Informations légales"><a href="/legal-notice.html">Mentions légales</a><a href="/beta-terms.html">Conditions d’utilisation</a><a href="/privacy-notice.html">Confidentialité</a></nav></footer>');
 launchHtml = launchHtml.replace('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet>', '');
+launchHtml = launchHtml.replace('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">', '');
 const priceStart = launchHtml.indexOf('<div class="billing-period"', launchHtml.indexOf('<section class="section pricing-section"'));
 const priceEnd = launchHtml.indexOf("</section>", priceStart);
 if (priceStart >= 0 && priceEnd > priceStart) {
@@ -237,6 +238,8 @@ if (launchApp.includes(oldSave)) launchApp=launchApp.replace(oldSave,newSave);
 write("public/app.js", launchApp);
 
 let launchServer = read("src/server.js");
+launchServer = launchServer.replace('const VERSION = "1.9.0-alpha.20";', 'const VERSION = "1.9.0-alpha.21";');
+const releasePackage = JSON.parse(read("package.json")); releasePackage.version = "1.9.0-alpha.21"; write("package.json", JSON.stringify(releasePackage, null, 2) + "\n"); write("VERSION", "1.9.0-alpha.21\n");
 launchServer = launchServer.replace('const BETA_TERMS_VERSION = "0.1";','const BETA_TERMS_VERSION = "1.0";').replace('const PRIVACY_NOTICE_VERSION = "0.1";','const PRIVACY_NOTICE_VERSION = "1.0";');
 write("src/server.js", launchServer);
 
