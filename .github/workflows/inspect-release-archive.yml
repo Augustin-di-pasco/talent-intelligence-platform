@@ -1,0 +1,25 @@
+name: Inspect release archive
+on:
+  push:
+    paths:
+      - ".github/workflows/inspect-release-archive.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: write
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract release archive
+        run: |
+          mkdir -p /tmp/zerilys-inspection
+          unzip -oq ZERILYS.zip -d /tmp/zerilys-inspection
+          cd /tmp/zerilys-inspection
+          zip -qr "$GITHUB_WORKSPACE/zerilys-source-inspection.zip" .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: zerilys-source-inspection
+          path: zerilys-source-inspection.zip
+          retention-days: 1
