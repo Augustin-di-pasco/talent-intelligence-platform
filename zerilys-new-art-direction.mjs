@@ -207,7 +207,7 @@ if (!app.includes("ZERILYS ATLAS — immersive home architecture")) {
    </div>
    <div class="z-hero-visual">
     <div class="z-scene-label z-scene-top"><span>01 / GLOBAL CONNECTIONS</span><b>WORLDWIDE</b></div>
-    <div class="z-scene-frame">${scene}</div>
+    <div class="z-scene-frame">\${scene}</div>
     <div class="z-scene-label z-scene-bottom"><span>PEOPLE · SKILLS · PURPOSE</span><b>ZERILYS / 2026</b></div>
     <div class="z-scene-node z-node-talent"><small>01 / TALENT</small><b>Compétences</b><span>Identité · Preuves · Parcours</span></div>
     <div class="z-scene-node z-node-company"><small>02 / ORGANISATION</small><b>Entreprises</b><span>Recrutement · Missions · Projets</span></div>
@@ -244,7 +244,7 @@ if (!app.includes("ZERILYS ATLAS — immersive home architecture")) {
  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded",run,{once:true});
  else run();
 })();
-`.replaceAll("\\`", "`");
+`.replaceAll("\\`", "`").replaceAll("\\${scene}", "${scene}");
   write("public/app.js", app);
 }
 console.log("ZERILYS new atlas art direction installed.");
