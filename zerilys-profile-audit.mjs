@@ -68,4 +68,10 @@ write("public/styles.css",css);
 const profileAuditTest=fs.readFileSync(path.join(scriptDir,"test/profile-bilingual-coverage.test.js"),"utf8");
 fs.mkdirSync(path.join(root,"test"),{recursive:true});
 write("test/profile-bilingual-coverage.test.js",profileAuditTest);
+const testsDir=path.join(root,"test");
+for(const name of fs.readdirSync(testsDir).filter(name=>name.endsWith(".test.js"))){
+ const file=path.join(testsDir,name),source=fs.readFileSync(file,"utf8");
+ const aligned=source.replaceAll('const VERSION = "1.9.0-alpha.20"','const VERSION = "1.9.0-alpha.21"');
+ if(aligned!==source)fs.writeFileSync(file,aligned);
+}
 console.log("ZERILYS candidate profile refresh and responsive corrections applied.");
