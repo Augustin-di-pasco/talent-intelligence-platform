@@ -40,7 +40,7 @@ if (!i18n.includes("ZERILYS complete bilingual language pass")) {
   if (at < 0) throw new Error("Language engine insertion point not found");
   const block = "\n  // ZERILYS complete bilingual language pass\n"
     + "  const reviewedLanguagePairs = " + JSON.stringify(pairs) + ";\n"
-    + "  for (const [source, french, english] of reviewedLanguagePairs) { if (source) fr[source] = french; if (french) en[french] = english; }\n";
+    + "  for (const [source, french, english] of reviewedLanguagePairs) { if (source) fr[source] = french; if (source) en[source] = english; if (french) en[french] = english; }\n";
   i18n = i18n.slice(0, at) + block + i18n.slice(at);
 }
 i18n = i18n.replace('document.title = language === "fr" ? "ZERILYS — Talent Intelligence" : "ZERILYS — Talent Intelligence";','document.title = language === "fr" ? "ZERILYS — Intelligence des talents" : "ZERILYS — Talent Intelligence";');
