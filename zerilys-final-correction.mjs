@@ -161,7 +161,7 @@ for (const page of ["public/index.html","public/legal-notice.html","public/beta-
    searchApp += String.raw`
 /* ZERILYS talent search interaction repair */
 (() => {
-  const norm = value => (value || "").replace(/\\s+/g," ").trim().toLocaleLowerCase("fr");
+  const norm = value => (value || "").replace(/\s+/g," ").trim().toLocaleLowerCase("fr");
   const isSearchLabel = el => /^(rechercher|recherche|search|lancer la recherche|voir les profils)$/i.test(norm(el.textContent));
   const findSearchZone = node => {
     let current = node;
