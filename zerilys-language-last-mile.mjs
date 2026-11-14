@@ -60,6 +60,16 @@ const rows=[
 ["Exécution réalisée dans un service isolé distinct. Le code n'est pas exécuté par le serveur de la plateforme.","Exécution réalisée dans un service isolé distinct. Le code n’est pas exécuté par le serveur de la plateforme.","Execution takes place in a separate isolated service. Code is not executed by the platform server."],
 ["Aucune évaluation autorisée par le candidat.","Aucune évaluation autorisée par le candidat.","No assessment is authorised by the candidate."]
 ];
+rows.push(
+["recruiter","recruteur","Recruiter"],
+["viewer","lecteur","Viewer"],
+["candidate","candidat","Candidate"],
+["company","entreprise","Company"],
+["open","ouvert","Open"],
+["public","public","Public"],
+["private","privé","Private"],
+["degree","diplôme","Degree"]
+);
 if(!source.includes("ZERILYS final all-surface bilingual translations")){
  const at=source.indexOf('  let language = "fr";');
  if(at<0)throw new Error("Language engine insertion point not found");
