@@ -39,7 +39,7 @@ const actionAt=app.indexOf(actionMarker);
 const bindMarker=" const bind=()=>{";
 const bindAt=app.indexOf(bindMarker,actionAt);
 if(actionAt<0||bindAt<0)throw Error("Legacy mailto plan action markers not found");
-const guard='\\n  if(document.querySelector("[data-billing-plan]"))return;';
+const guard='\n  if(document.querySelector("[data-billing-plan]"))return;';
 if(!app.slice(bindAt,bindAt+bindMarker.length+guard.length+8).includes("data-billing-plan")){
  const pos=bindAt+bindMarker.length;
  app=app.slice(0,pos)+guard+app.slice(pos);
