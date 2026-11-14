@@ -30,6 +30,10 @@ const sectionById = (source, id) => {
 const pulse = sectionById(html, "global-pulse");
 const recruiter = sectionById(html, "for-recruiters");
 html = html.slice(0, pulse.index) + recruiter.html + html.slice(pulse.index + pulse.html.length);
+const recruiterStart = '<section class="section pricing-section" id="for-recruiters">';
+if (!html.includes(recruiterStart)) throw new Error("Homepage cleanup: moved recruiter section is missing");
+html = html.replace(recruiterStart, recruiterStart + '<span id="global-pulse" class="sr-only" aria-hidden="true"></span>');
+
 const oldRecruiter = html.lastIndexOf(recruiter.html);
 if (oldRecruiter < 0) throw new Error("Homepage cleanup: original recruiter section could not be located");
 html = html.slice(0, oldRecruiter) + html.slice(oldRecruiter + recruiter.html.length);
