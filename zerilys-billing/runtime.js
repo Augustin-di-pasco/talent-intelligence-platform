@@ -41,11 +41,11 @@ export async function processStripeEvent(e,store){
  if(e.type==="checkout.session.completed"||e.type==="checkout.session.async_payment_succeeded"){
   const u=store.state.users.find(x=>x.id===(o.client_reference_id||o.metadata?.zerilys_user_id)&&x.accountType==="company");
   if(u){u.billing??={};u.billing.customerId=typeof o.customer==="string"?o.customer:o.customer?.id;delete u.billing.pendingCheckout;if(o.subscription){const id=typeof o.subscription==="string"?o.subscription:o.subscription.id;sync(u,await stripe("subscriptions/"+encodeURIComponent(id)));}}
- }else if(e.type==="checkout.session.expired"){
+ }else if(e.type==="checkout.session.expired"||e.type==="checkout.session.async_payment_failed"){
   const u=store.state.users.find(x=>x.id===(o.client_reference_id||o.metadata?.zerilys_user_id)&&x.accountType==="company");if(u)delete u.billing?.pendingCheckout;
  }else if(["customer.subscription.created","customer.subscription.updated","customer.subscription.deleted"].includes(e.type)){
   const u=userFor(store,o);if(u){sync(u,o);delete u.billing.pendingCheckout;}
- }else if(e.type==="invoice.paid"||e.type==="invoice.payment_failed"){
+ }else if(e.type==="invoice.paid"||e.type==="invoice.payment_failed"||e.type==="invoice.payment_action_required"){
   const ref=o.subscription||o.parent?.subscription_details?.subscription,id=typeof ref==="string"?ref:ref?.id;if(id){const s=await stripe("subscriptions/"+encodeURIComponent(id)),u=userFor(store,s);if(u)sync(u,s);}
  }
  store.state.billingEvents.push({id:e.id,type:e.type,processedAt:new Date().toISOString()});if(store.state.billingEvents.length>5000)store.state.billingEvents.splice(0,store.state.billingEvents.length-5000);await store.save();
