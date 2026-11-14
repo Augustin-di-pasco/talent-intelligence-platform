@@ -14,6 +14,6 @@ for(const file of ["public/index.html","public/legal-notice.html","public/beta-t
 }
 for(const file of ["public/app.js","src/server.js"]){
  const s=read(file);const lines=s.split("\n");
- const picked=lines.filter(line=>/(tr\\(|toast\\(|alert\\(|confirm\\(|textContent|innerHTML|placeholder|aria-label|title=|throw new Error|message:|error:)/i.test(line));
+ const picked=lines.filter(line=>/(tr|toast|alert|confirm|textContent|innerHTML|placeholder|aria-label|title=|throw new Error|message:|error:)/i.test(line));
  chunks(file.replace(/[^a-z]+/gi,"_"),picked.join("\n").slice(0,18000));
 }
