@@ -13,7 +13,23 @@ if(/Aucun paiement en ligne n’est activé|Aucun paiement ni abonnement Stripe 
 write("public/app.js",app);
 let i18n=read("public/i18n.js");
 if(!i18n.includes("ZERILYS_AUDIT_BILLING_LANGUAGE")){
-const block='  // ZERILYS_AUDIT_BILLING_LANGUAGE\n  Object.assign(en,{' + JSON.stringify(corrected)+':"Applicable prices are shown before subscription. Prices exclude VAT; applicable VAT is calculated at checkout. Candidate access is free.","Les abonnements sont réservés aux comptes entreprise. L’accès candidat reste gratuit.":"Subscriptions are available to company accounts only. Candidate access is free."});\n';
+const additions={
+  [corrected]:"Applicable prices are shown before subscription. Prices exclude VAT; applicable VAT is calculated at checkout. Candidate access is free.",
+  "Le bon cadre pour":"The right plan to",
+  "faire grandir vos recrutements.":"grow your recruiting.",
+  "Choisissez votre formule. Les tarifs s’affichent après sélection.":"Choose your plan. Prices appear after selection.",
+  "INDÉPENDANT":"INDEPENDENT",
+  "Continuer au mois":"Continue monthly",
+  "Continuer à l’année":"Continue annually",
+  "179 € HT / mois":"€179 excl. VAT / month",
+  "Prix hors taxes. La TVA applicable est calculée au paiement. L’accès candidat reste gratuit.":"Prices exclude VAT. Applicable VAT is calculated at checkout. Candidate access is free.",
+  "Choisissez une formule.":"Choose a plan.",
+  "Gérer mon abonnement":"Manage my subscription",
+  "Les abonnements sont réservés aux comptes entreprise. L’accès candidat reste gratuit.":"Subscriptions are reserved for company accounts. Candidate access is free.",
+  "Un abonnement actif est nécessaire pour inviter des membres.":"An active subscription is required to invite team members.",
+  "Un abonnement actif est nécessaire pour publier une offre.":"An active subscription is required to publish an offer."
+};
+const block='  // ZERILYS_AUDIT_BILLING_LANGUAGE\\n  Object.assign(en,'+JSON.stringify(additions,null,2)+');\\n';
 i18n=replace(i18n,'  let language = "fr";',block+'  let language = "fr";',"language dictionary");write("public/i18n.js",i18n);
 }
 let fr=read("public/beta-terms.html");
