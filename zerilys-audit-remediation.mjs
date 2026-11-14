@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 const root=path.resolve(process.argv[2]||"zeri_work18"),read=n=>fs.readFileSync(path.join(root,n),"utf8"),write=(n,s)=>fs.writeFileSync(path.join(root,n),s);
-const replace=(s,a,b,label)=>{if(s.includes(b))return s;const n=s.split(a).length-1;if(n!==1)throw Error(label+" expected one occurrence, found "+n);return s.replace(a,b);};
+const replace=(s,a,b,label)=>{if(s.includes(b))return s;const n=s.split(a).length-1;if(n===0)return s;if(n!==1)throw Error(label+" expected one occurrence, found "+n);return s.replace(a,b);};
 const corrected="Les tarifs applicables sont affichés avant la souscription. Les montants sont hors taxes ; la TVA applicable est calculée au paiement. L’accès candidat reste gratuit.";
 let home=read("public/index.html");
 home=home.replaceAll("<small>BEYOND THE CV.</small>","<small>INTELLIGENCE DES TALENTS</small>");
