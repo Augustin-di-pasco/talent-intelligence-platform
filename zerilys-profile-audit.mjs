@@ -9,7 +9,7 @@ const syncStart=app.indexOf("async function syncProfileSurfaces");
 const syncEnd=app.indexOf("\nfunction selectSignal",syncStart);
 if(syncStart<0||syncEnd<0)throw new Error("Profile synchronization helper not found");
 let sync=app.slice(syncStart,syncEnd);
-sync=once(sync,"  await renderEvidence();\n  renderIdentity();","  renderSkills();\n  renderTrajectory();\n  await renderQualifications();\n  await renderEvidence();\n  renderIdentity();","profile sync renderers");
+sync=once(sync," await renderEvidence();\n renderIdentity();"," renderSkills();\n renderTrajectory();\n await renderQualifications();\n await renderEvidence();\n renderIdentity();","profile sync renderers");
 app=app.slice(0,syncStart)+sync+app.slice(syncEnd);
 app=once(app,'me=d.user;renderSkills();renderIdentity();selectSignal("capabilities")','me=d.user;await syncProfileSurfaces();selectSignal("capabilities")',"remove skill refresh");
 app=once(app,'await renderEvidence();renderIdentity();selectSignal("evidence")','await syncProfileSurfaces();selectSignal("evidence")',"evidence review refresh");
