@@ -1,6 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 const root=path.resolve(process.argv[2]||"zeri_work18");
+const scriptDir=path.dirname(fileURLToPath(import.meta.url));
 const read=n=>fs.readFileSync(path.join(root,n),"utf8");
 const write=(n,s)=>fs.writeFileSync(path.join(root,n),s);
 const once=(source,before,after,label)=>{const count=source.split(before).length-1;if(count!==1)throw new Error(label+": expected one match, found "+count);return source.replace(before,after);};
@@ -63,4 +65,7 @@ css+="\n"+[
 ].join("\n")+"\n";
 }
 write("public/styles.css",css);
+const profileAuditTest=fs.readFileSync(path.join(scriptDir,"test/profile-bilingual-coverage.test.js"),"utf8");
+fs.mkdirSync(path.join(root,"test"),{recursive:true});
+write("test/profile-bilingual-coverage.test.js",profileAuditTest);
 console.log("ZERILYS candidate profile refresh and responsive corrections applied.");
