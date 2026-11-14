@@ -18,3 +18,9 @@ test("candidate profile and editor layouts have bounded responsive geometry",()=
  assert.ok(css.includes("#editModal .form-grid{grid-template-columns:minmax(0,1fr);gap:12px}"));
  assert.ok(css.includes("#profileModal .orbit-node{min-width:0;max-width:calc(50vw - 18px)"));
 });
+
+test("server, package and release version are aligned",()=>{
+ const pkg=JSON.parse(read("package.json")),server=read("src/server.js");
+ assert.equal(read("VERSION").trim(),pkg.version);
+ assert.ok(server.includes('const VERSION = "'+pkg.version+'";'));
+});
