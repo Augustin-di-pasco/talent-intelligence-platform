@@ -78,7 +78,7 @@ if(fs.existsSync(homeTestPath)){
 }
 for(const name of fs.readdirSync(testsDir).filter(name=>name.endsWith(".test.js"))){
  const file=path.join(testsDir,name),source=fs.readFileSync(file,"utf8");
- const aligned=source.replaceAll('const VERSION = "1.9.0-alpha.20"','const VERSION = "1.9.0-alpha.21"').replaceAll('1\\.9\\.0-alpha\\.20','1\\.9\\.0-alpha\\.21');
+ const aligned=source.replaceAll("1.9.0-alpha.20","1.9.0-alpha.21").replaceAll("1\\\\.9\\\\.0-alpha\\\\.20","1\\\\.9\\\\.0-alpha\\\\.21");
  if(aligned!==source)fs.writeFileSync(file,aligned);
 }
 console.log("ZERILYS candidate profile refresh and responsive corrections applied.");
