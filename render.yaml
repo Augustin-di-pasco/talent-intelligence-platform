@@ -4,7 +4,7 @@ services:
     runtime: node
     region: frankfurt
     plan: starter
-    buildCommand: unzip -oq ZERILYS.zip && node apply-zerilys-polish.mjs zeri_work18 && node zerilys-billing/install.mjs zeri_work18 && cp .env.example .env.production.example zeri_work18/ && cd zeri_work18 && node --check src/server.js && node --check src/billing.js && node --check public/app.js && node --test test/billing.test.js test/billing-legal-consistency.test.js && npm install --omit=dev --no-audit --no-fund
+    buildCommand: unzip -oq ZERILYS.zip && node apply-zerilys-polish.mjs zeri_work18 && node zerilys-billing/install.mjs zeri_work18 && cp .env.example .env.production.example zeri_work18/ && cd zeri_work18 && node --check src/server.js && node --check src/billing.js && node --check public/app.js && node --test test/billing.test.js test/billing-legal-consistency.test.js test/interactive-inventory.test.js && npm install --omit=dev --no-audit --no-fund
     startCommand: cd zeri_work18 && npm start
     healthCheckPath: /api/health
     disk:
