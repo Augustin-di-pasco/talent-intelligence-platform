@@ -97,56 +97,95 @@ if (!css.includes("/* ZERILYS release polish: registration and pilot clarity */"
   ].join("\n");
   css += "\n" + cssAppend + "\n";
 }
-/* ZERILYS employer workspace: three equal, fluid columns across the available width. */
+/* ZERILYS employer workspace — complete horizontal redesign */
 css += `
-/* Employer workspace width and form repair */
+/* Full-width three-panel employer console */
 html body main .company-team-workspace#opportunities{
  display:grid!important;
- grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr)!important;
- align-items:start!important;
- gap:clamp(18px,2vw,30px)!important;
- width:100%!important;
+ grid-template-columns:minmax(360px,1.18fr) minmax(300px,1fr) minmax(300px,1fr)!important;
+ align-items:stretch!important;
+ justify-content:stretch!important;
+ gap:20px!important;
+ position:relative!important;
+ left:50%!important;
+ transform:translateX(-50%)!important;
+ width:calc(100vw - 48px)!important;
  max-width:none!important;
  min-width:0!important;
- margin-inline:0!important;
+ margin:22px 0 28px!important;
+ padding:0!important;
  box-sizing:border-box!important;
 }
 html body main .company-team-workspace#opportunities > *{
+ display:flex!important;
+ flex-direction:column!important;
+ align-items:stretch!important;
+ justify-content:flex-start!important;
+ gap:14px!important;
+ width:100%!important;
+ min-width:0!important;
+ max-width:none!important;
+ min-height:250px!important;
+ padding:22px!important;
+ margin:0!important;
+ border:1px solid rgba(130,160,190,.22)!important;
+ border-radius:18px!important;
+ background:linear-gradient(160deg,rgba(18,30,47,.92),rgba(9,15,25,.96))!important;
+ box-shadow:0 12px 34px rgba(0,0,0,.16)!important;
+ box-sizing:border-box!important;
+}
+html body main .company-team-workspace#opportunities > * h2,
+html body main .company-team-workspace#opportunities > * h3{
+ width:100%!important;
+ max-width:none!important;
+ margin:0 0 4px!important;
+ line-height:1.2!important;
+ font-size:clamp(18px,1.25vw,22px)!important;
+}
+html body main .company-team-workspace#opportunities form{
+ display:flex!important;
+ flex-direction:column!important;
+ align-items:stretch!important;
+ gap:11px!important;
+ width:100%!important;
+ max-width:none!important;
+ min-width:0!important;
+ margin:0!important;
+}
+html body main .company-team-workspace#opportunities form > *,
+html body main .company-team-workspace#opportunities input,
+html body main .company-team-workspace#opportunities select,
+html body main .company-team-workspace#opportunities textarea,
+html body main .company-team-workspace#opportunities button{
  display:block!important;
  width:100%!important;
  max-width:none!important;
  min-width:0!important;
  box-sizing:border-box!important;
 }
-html body main .company-team-workspace#opportunities form{
- display:grid!important;
- grid-template-columns:repeat(2,minmax(0,1fr))!important;
- gap:12px!important;
- width:100%!important;
- max-width:none!important;
- min-width:0!important;
-}
-html body main .company-team-workspace#opportunities form > *{
- width:100%!important;
- max-width:none!important;
- min-width:0!important;
- box-sizing:border-box!important;
-}
-html body main .company-team-workspace#opportunities textarea{
- grid-column:1/-1!important;
- min-height:120px!important;
-}
 html body main .company-team-workspace#opportunities input,
 html body main .company-team-workspace#opportunities select{
  min-height:48px!important;
 }
-@media(max-width:900px){
- html body main .company-team-workspace#opportunities{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+html body main .company-team-workspace#opportunities textarea{
+ min-height:108px!important;
+ resize:vertical!important;
 }
-@media(max-width:620px){
- html body main .company-team-workspace#opportunities{grid-template-columns:minmax(0,1fr)!important}
- html body main .company-team-workspace#opportunities form{grid-template-columns:minmax(0,1fr)!important}
- html body main .company-team-workspace#opportunities textarea{grid-column:auto!important}
+@media(max-width:980px){
+ html body main .company-team-workspace#opportunities{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  width:calc(100vw - 32px)!important;
+ }
+ html body main .company-team-workspace#opportunities > *:first-child{grid-column:1/-1!important}
+}
+@media(max-width:640px){
+ html body main .company-team-workspace#opportunities{
+  grid-template-columns:minmax(0,1fr)!important;
+  width:calc(100vw - 24px)!important;
+  gap:12px!important;
+ }
+ html body main .company-team-workspace#opportunities > *:first-child{grid-column:auto!important}
+ html body main .company-team-workspace#opportunities > *{padding:16px!important}
 }
 `;
 /* ZERILYS spacing correction: compact section rhythm without changing the employer form layout. */
