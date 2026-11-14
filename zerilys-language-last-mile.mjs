@@ -80,8 +80,8 @@ if(!source.includes("ZERILYS final all-surface bilingual translations")){
 }
 fs.writeFileSync(file,source);
 const server=fs.readFileSync(path.join(root,"src/server.js"),"utf8");
-for(const term of ["Reset your ZERILYS password","Your ZERILYS private beta invitation","New candidate interest","Application status updated"]){
+for(const term of ['subject:"Reset your ZERILYS password"','subject:"Your ZERILYS private beta invitation"','title:"New candidate interest"','title:"Application status updated"']){
  const i=server.indexOf(term);
- if(i>=0)for(let j=Math.max(0,i-900),n=0;j<Math.min(server.length,i+1600);j+=650,n++)console.log("ZERILYS_EMAIL_CONTEXT_"+term.replace(/[^a-z]/gi,"_")+"_"+n,server.slice(j,Math.min(server.length,j+650)));
+ if(i>=0)for(let j=Math.max(0,i-400),n=0;j<Math.min(server.length,i+1500);j+=600,n++)console.log("ZERILYS_EMAIL_CONTEXT_"+term.replace(/[^a-z]/gi,"_")+"_"+n,server.slice(j,Math.min(server.length,j+600)));
 }
 console.log("ZERILYS final all-surface bilingual translations applied.");
