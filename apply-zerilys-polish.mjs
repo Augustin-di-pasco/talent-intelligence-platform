@@ -14,7 +14,7 @@ function once(source, before, after, label) {
 }
 
 let html = read("public/index.html");
-for (const term of ["Profil 1","Devise 2","Opportunité 3","Projet 4","Découvrez des profils aux compétences vérifiables","From idea","No published opportunities yet","no social feed","Talent search","Search by skills","Search by expertise","Spot complementary skills","See what is demonstrated","Bold talent","Talent","Collaboration","Intelligence","Marché"]) {
+for (const term of ["Profil 1","Profile 1","Devise 2","Currency 2","Opportunité 3","Opportunity 3","Projet 4","Project 4","Découvrez des profils aux compétences vérifiables","Discover profiles","profiles with verifiable skills","Bold talent","bold","Talent","Collaboration","Intelligence","Marché","nav","data-section","step"]) {
   for (const [file,source] of [["index.html",html],["app.js",read("public/app.js")],["i18n.js",read("public/i18n.js")]]) {
     const at=source.toLowerCase().indexOf(term.toLowerCase());
     if(at>=0) console.log("HOME_DIAG",JSON.stringify(term),file,source.slice(Math.max(0,at-500),Math.min(source.length,at+900)).replace(/\\s+/g," ").slice(0,1400));
