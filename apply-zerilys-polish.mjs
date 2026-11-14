@@ -20,6 +20,34 @@ for (const term of ["Profil 1","Profile 1","Devise 2","Currency 2","Opportunité
     if(at>=0) console.log("HOME_DIAG",JSON.stringify(term),file,source.slice(Math.max(0,at-500),Math.min(source.length,at+900)).replace(/\\s+/g," ").slice(0,1400));
   }
 }
+// HOME PAGE STRUCTURAL REWORK — exact section IDs confirmed from the source markup.
+const sectionById = (source, id) => {
+  const re = new RegExp('<section\\b(?=[^>]*\\bid="' + id + '")[^>]*>[\\s\\S]*?<\\/section>', "g");
+  const matches = [...source.matchAll(re)];
+  if (matches.length !== 1) throw new Error("Homepage cleanup: expected one #" + id + " section, found " + matches.length);
+  return { html: matches[0][0], index: matches[0].index };
+};
+const pulse = sectionById(html, "global-pulse");
+const recruiter = sectionById(html, "for-recruiters");
+html = html.slice(0, pulse.index) + recruiter.html + html.slice(pulse.index + pulse.html.length);
+const oldRecruiter = html.lastIndexOf(recruiter.html);
+if (oldRecruiter < 0) throw new Error("Homepage cleanup: original recruiter section could not be located");
+html = html.slice(0, oldRecruiter) + html.slice(oldRecruiter + recruiter.html.length);
+const opportunities = sectionById(html, "opportunities");
+html = html.slice(0, opportunities.index) + html.slice(opportunities.index + opportunities.html.length);
+const projectLayout = '<div class="project-layout"><div class="project-intro"><div class="big-number">∞</div><h3>From idea<br>to team.</h3><p>Meet people with complementary skills and move a project forward.</p><button class="btn primary" id="createProject">Create a project ↗</button></div><div class="project-list" id="projectList"><div class="loading-card">Finding open collaborations…</div></div></div>';
+if (!html.includes(projectLayout)) throw new Error("Homepage cleanup: the confirmed project intro markup changed; refusing an unsafe partial removal");
+html = html.replace(projectLayout, '<div class="project-layout"><div class="project-intro"><div class="big-number">∞</div><h3>From idea<br>to team.</h3></div></div>');
+const oldNav = '<nav aria-label="Navigation principale"><a href="#discover">Talents</a><a href="#opportunities">Opportunités</a><a href="#projects">Collaborations</a><a href="#global-pulse">Intelligence marché</a></nav>';
+const newNav = '<nav aria-label="Navigation principale"><a href="#discover">Talents</a><a href="#for-recruiters">Recrutement</a></nav>';
+if (!html.includes(oldNav)) throw new Error("Homepage cleanup: primary navigation markup changed; refusing to leave stale section links");
+html = html.replace(oldNav, newNav);
+// Diagnostic for the four-step strip: report its source container before the final targeted removal.
+for (const sourceName of ["index.html","app.js","i18n.js"]) {
+  const source = sourceName === "index.html" ? html : read("public/" + sourceName);
+  const hits = [...source.matchAll(/(?:profile|profil|currency|devise|opportunit[eé]|project|projet|step|étape)/gi)].slice(0, 24);
+  console.log("HOME_STEPPER_SCAN", sourceName, hits.map(m => source.slice(Math.max(0,m.index-90),Math.min(source.length,m.index+150)).replace(/\\s+/g," ")).join(" || "));
+}
 html = once(html,
   '<p id="authSub">Join a network built around what you can do.</p><form id="authForm">',
   '<p id="authSub">Join a network built around what you can do.</p><div id="registrationStatus" class="registration-status hidden" role="status" aria-live="polite"></div><form id="authForm">',
