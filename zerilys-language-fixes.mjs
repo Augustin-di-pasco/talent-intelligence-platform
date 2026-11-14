@@ -82,7 +82,7 @@ if (!source.includes("ZERILYS complete bilingual language fixes")) {
   if(at<0)throw new Error("Language engine insertion point not found");
   const block="\n  // ZERILYS complete bilingual language fixes\n"
     +"  const finalLanguagePairs = "+JSON.stringify(rows)+";\n"
-    +"  for (const [original, french, english] of finalLanguagePairs) { fr[original]=french; en[french]=english; }\n";
+    +"  for (const [original, french, english] of finalLanguagePairs) { fr[original]=french; en[original]=english; en[french]=english; }\n";
   source=source.slice(0,at)+block+source.slice(at);
 }
 source=source.replace('const attrs = ["placeholder", "aria-label", "title", "alt"];','const attrs = ["placeholder", "aria-label", "aria-description", "title", "alt"];');
