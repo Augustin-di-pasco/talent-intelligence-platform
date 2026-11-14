@@ -266,7 +266,7 @@ footer .footer-brand,footer .brand,footer .footer-links,.site-footer .footer-bra
 write("public/styles.css",finalRepairCss);
 
 let finalRepairHtml = read("public/index.html");
-const oldPartnerNote = /<section class="employer-pricing-note" aria-label="Tarifs complémentaires">[\s\S]*?<\\/section>/;
+const oldPartnerNote = /<section class="employer-pricing-note" aria-label="Tarifs complémentaires">[\s\S]*?<\/section>/;
 if (oldPartnerNote.test(finalRepairHtml)) {
  finalRepairHtml=finalRepairHtml.replace(oldPartnerNote,'<section class="employer-pricing-note" aria-label="Tarifs partenaires"><strong>Tarifs partenaires bêta :</strong> Solo : 29 € HT/mois · Team : 69 € HT/mois · Business : 139 € HT/mois. Prix garantis pendant 12 mois pour les partenaires pilotes. <strong>Offre Business standard :</strong> 179 € HT/mois ou 1 790 € HT/an. <strong>Offre Entreprise :</strong> sur devis.</section>');
 }
