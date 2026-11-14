@@ -397,7 +397,7 @@ consolidatedApp += [
 "   const disclaimer=document.querySelector('.pricing-disclaimer');const disclaimerText='Offre Business standard : 179 € HT/mois ou 1 790 € HT/an. Tarifs partenaires bêta garantis 12 mois : Solo 29 € · Team 69 € · Business 139 € HT/mois. Aucun paiement en ligne n’est activé.';if(disclaimer&&disclaimer.textContent!==disclaimerText)disclaimer.textContent=disclaimerText;",
 " };",
 " if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();",
-" const observer=new MutationObserver(()=>apply());observer.observe(document.documentElement,{childList:true,subtree:true});",
+" // The initial module executes before DOMContentLoaded; one pass is sufficient and avoids mutation loops.",
 "})();"
 ].join("\n")+"\n";
 }
