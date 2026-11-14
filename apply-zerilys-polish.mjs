@@ -338,3 +338,4 @@ console.log("ZERILYS public-beta legal and candidate-profile layer applied.");
 await import("./zerilys-final-ui.mjs");
 await import("./zerilys-final-correction.mjs");
 await import("./zerilys-language-overhaul.mjs");
+await import("./zerilys-language-fixes.mjs");
