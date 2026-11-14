@@ -225,3 +225,92 @@ if (!removeIndexStripApp.includes("ZERILYS remove redundant lower-page index str
 `;
 }
 write("public/app.js", removeIndexStripApp);
+
+
+/* ZERILYS final visual repair — footer, pricing, hero core and index strip */
+let finalRepairCss = read("public/styles.css");
+finalRepairCss += String.raw`
+/* Footer pricing note: full-width, readable and never squeezed into one grid track */
+.employer-pricing-note{
+  display:block!important;grid-column:1/-1!important;flex:0 0 100%!important;
+  width:100%!important;max-width:1500px!important;min-width:0!important;
+  box-sizing:border-box!important;margin:24px auto 0!important;padding:18px 24px!important;
+  line-height:1.75!important;overflow-wrap:normal!important;word-break:normal!important;
+  border-top:1px solid rgba(164,190,211,.16);font-size:12px!important;
+}
+footer,.site-footer,.footer,.footer-inner{
+  min-width:0;
+}
+footer .footer-grid,footer .footer-inner,.site-footer .footer-grid,.site-footer .footer-inner{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:22px;
+}
+footer .footer-brand,footer .brand,footer .footer-links,.site-footer .footer-brand,.site-footer .footer-links{
+  min-width:0;max-width:100%;
+}
+.candidate-core .candidate-monogram{
+  width:108px!important;height:108px!important;min-width:108px!important;
+  display:grid!important;place-items:center!important;overflow:hidden!important;
+  border-radius:50%!important;letter-spacing:0!important;line-height:1!important;
+}
+.candidate-core .candidate-monogram .candidate-hero-initials,
+.candidate-core .candidate-monogram>span:not(i){
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  width:100%!important;height:100%!important;padding:0!important;margin:0!important;
+  font-family:var(--display,Manrope,sans-serif)!important;font-size:25px!important;
+  font-weight:800!important;letter-spacing:.055em!important;line-height:1!important;
+  white-space:nowrap!important;transform:none!important;
+}
+.candidate-core .candidate-monogram img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+@media(max-width:760px){.candidate-core .candidate-monogram{width:76px!important;height:76px!important;min-width:76px!important}.candidate-core .candidate-monogram .candidate-hero-initials{font-size:19px!important}}
+`;
+write("public/styles.css",finalRepairCss);
+
+let finalRepairHtml = read("public/index.html");
+const oldPartnerNote = /<section class="employer-pricing-note" aria-label="Tarifs complémentaires">[\\s\\S]*?<\\/section>/;
+if (oldPartnerNote.test(finalRepairHtml)) {
+ finalRepairHtml=finalRepairHtml.replace(oldPartnerNote,'<section class="employer-pricing-note" aria-label="Tarifs partenaires"><strong>Tarifs partenaires bêta :</strong> Solo : 29 € HT/mois · Team : 69 € HT/mois · Business : 139 € HT/mois. Prix garantis pendant 12 mois pour les partenaires pilotes. <strong>Offre Business standard :</strong> 179 € HT/mois ou 1 790 € HT/an. <strong>Offre Entreprise :</strong> sur devis.</section>');
+}
+write("public/index.html",finalRepairHtml);
+
+let finalRepairApp=read("public/app.js");
+if(!finalRepairApp.includes("ZERILYS final French pricing and index cleanup")){
+finalRepairApp+=String.raw`
+/* ZERILYS final French pricing and index cleanup */
+(() => {
+ const clean = () => {
+  const cards=[...document.querySelectorAll(".pricing-card")];
+  if(cards.length>=4){
+   const intro=[...document.querySelectorAll("h1,h2,h3")].find(el=>(el.textContent||"").includes("Recrutez autrement")||(el.textContent||"").includes("Recruit differently"));
+   if(intro) intro.textContent="Recrutez autrement. Avec des compétences mieux documentées.";
+   const cardData=[
+    {k:"CANDIDAT",h:"Identité professionnelle",p:"0 € pendant la bêta",items:["Profil professionnel évolutif","Compétences et réalisations","Découverte et opportunités"],foot:"Accès candidat gratuit"},
+    {k:"RECRUTEUR",h:"Offre Solo",p:"39 € HT / mois · 390 € HT / an",items:["Recherche de talents spécialisés","Profils, compétences et réalisations","Publication et suivi des opportunités","Suivi des candidatures"],foot:"Tarif standard"},
+    {k:"ÉQUIPE",h:"Offre Team",p:"89 € HT / mois · 890 € HT / an",items:["Espace de recrutement partagé","Rôles recruteur et lecteur","Coordination des opportunités","Gestion d’équipe"],foot:"Tarif standard"},
+    {k:"ENTREPRISE",h:"Offre Entreprise",p:"Sur devis",items:["Déploiement et accompagnement dédiés","Paramétrage selon vos besoins","Conditions et accompagnement spécifiques"],foot:"Étude personnalisée"}
+   ];
+   cards.slice(0,4).forEach((card,i)=>{
+    const d=cardData[i];
+    const kicker=card.querySelector(".pricing-kicker");if(kicker)kicker.textContent=d.k;
+    const heading=card.querySelector("h3");if(heading)heading.textContent=d.h;
+    const price=card.querySelector(".pricing-price");if(price)price.textContent=d.p;
+    const list=card.querySelector("ul");
+    if(list){list.replaceChildren(...d.items.map(value=>{const li=document.createElement("li");li.textContent=value;return li;}));}
+    const foot=card.querySelector(".pricing-foot");if(foot)foot.textContent=d.foot;
+   });
+  }
+  const note=document.querySelector(".employer-pricing-note");
+  if(note){note.style.gridColumn="1 / -1";note.style.width="100%";note.style.maxWidth="1500px";note.style.margin="24px auto 0";note.style.boxSizing="border-box";note.textContent="Tarifs partenaires bêta : Solo 29 € HT/mois · Team 69 € HT/mois · Business 139 € HT/mois, prix garantis pendant 12 mois. Offre Business standard : 179 € HT/mois ou 1 790 € HT/an. Offre Entreprise : sur devis.";}
+  const labels=["01 PROFIL","02 RÉALISATIONS","03 OPPORTUNITÉS","04 PROJETS"];
+  const norm=s=>(s||"").replace(/\\s+/g," ").trim().toLocaleUpperCase("fr");
+  const leaves=[...document.querySelectorAll("body *")].filter(el=>el.children.length===0&&labels.includes(norm(el.textContent)));
+  if(leaves.length===4){
+   const rows=leaves.map(el=>{let n=el;while(n.parentElement&&n.parentElement!==document.querySelector("main"))n=n.parentElement;return n;});
+   [...new Set(rows)].forEach(row=>{if(row&&row.parentElement)row.remove();});
+  }
+ };
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",clean,{once:true});else clean();
+})();
+`;
+}
+write("public/app.js",finalRepairApp);
+console.log("ZERILYS final visual repair applied.");
