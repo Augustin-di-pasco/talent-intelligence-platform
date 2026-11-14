@@ -14,12 +14,6 @@ function once(source, before, after, label) {
 }
 
 let html = read("public/index.html");
-for (const term of ["Profil 1","Profile 1","Devise 2","Currency 2","Opportunité 3","Opportunity 3","Projet 4","Project 4","Découvrez des profils aux compétences vérifiables","Discover profiles","profiles with verifiable skills","Bold talent","bold","Talent","Collaboration","Intelligence","Marché","nav","data-section","step"]) {
-  for (const [file,source] of [["index.html",html],["app.js",read("public/app.js")],["i18n.js",read("public/i18n.js")]]) {
-    const at=source.toLowerCase().indexOf(term.toLowerCase());
-    if(at>=0) console.log("HOME_DIAG",JSON.stringify(term),file,source.slice(Math.max(0,at-500),Math.min(source.length,at+900)).replace(/\\s+/g," ").slice(0,1400));
-  }
-}
 // HOME PAGE STRUCTURAL REWORK — exact section IDs confirmed from the source markup.
 const sectionById = (source, id) => {
   const re = new RegExp('<section\\b(?=[^>]*\\bid="' + id + '")[^>]*>[\\s\\S]*?<\\/section>', "g");
@@ -55,14 +49,7 @@ if (!html.includes(oldNav)) throw new Error("Homepage cleanup: primary navigatio
 html = html.replace(oldNav, newNav);
 html = html.replaceAll('href="#opportunities"', 'href="#discover"');
 html = html.replaceAll('href="#global-pulse"', 'href="#for-recruiters"');
-console.log("HOME_STEP_CLASSES", [...html.matchAll(/class="[^"]*(?:step|workflow|progress|journey)[^"]*"/gi)].map(m=>m[0]).join(" | "));
 
-// Diagnostic for the four-step strip: report its source container before the final targeted removal.
-for (const sourceName of ["index.html","app.js","i18n.js"]) {
-  const source = sourceName === "index.html" ? html : read("public/" + sourceName);
-  const hits = [...source.matchAll(/(?:profile|profil|currency|devise|opportunit[eé]|project|projet|step|étape)/gi)].slice(0, 24);
-  console.log("HOME_STEPPER_SCAN", sourceName, hits.map(m => source.slice(Math.max(0,m.index-90),Math.min(source.length,m.index+150)).replace(/\\s+/g," ")).join(" || "));
-}
 html = once(html,
   '<p id="authSub">Join a network built around what you can do.</p><form id="authForm">',
   '<p id="authSub">Join a network built around what you can do.</p><div id="registrationStatus" class="registration-status hidden" role="status" aria-live="polite"></div><form id="authForm">',
