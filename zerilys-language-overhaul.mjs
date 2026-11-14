@@ -107,4 +107,51 @@ for (const [file, href] of [["public/legal-notice.html","/legal-notice-en.html"]
   if (!html.includes("ZERILYS language versions")) html = html.replace("</body>", '<nav class="language-link" aria-label="Langues"><a href="' + href + '">Version anglaise</a></nav></body>');
   write(file, html);
 }
+
+const languageSource = read("public/i18n.js");
+function keysFromBlock(source) {
+  const keys = new Set();
+  for (const match of source.matchAll(/^\s*["']([^"']+)["']\s*:/gm)) keys.add(match[1]);
+  return keys;
+}
+function dictionaryKeys(name) {
+  const result = new Set();
+  const patterns = name === "fr"
+    ? [/const fr = \{([\s\S]*?)\n\s*\};/g, /Object\.assign\(fr,\s*\{([\s\S]*?)\}\);/g]
+    : [/Object\.assign\(en,\s*\{([\s\S]*?)\}\);/g];
+  for (const pattern of patterns) for (const match of languageSource.matchAll(pattern)) for (const key of keysFromBlock(match[1])) result.add(key);
+  return result;
+}
+const frKeys = dictionaryKeys("fr");
+const enKeys = dictionaryKeys("en");
+for (const [source, french, english] of pairs) { frKeys.add(source); enKeys.add(french); }
+const englishWords = /\b(the|your|you|profile|skills|search|create|account|company|project|opportunit|privacy|terms|sign|log|loading|failed|error|save|delete|cancel|close|submit|candidate|recruit|evidence|aspiration|visibility|settings|password|email|available|unavailable|success|please|enter|select|choose|remove|add|publish|message|notification|experience|location|network|applications|feedback|team|member|verified|career|history|assessment|results|share|download|forgot|reset|internship|apprenticeship|employment|research|business|industry|technology|finance|data|talent|company|viewer|recruiter|remote|hybrid|on.site|privacy|notice|legal|terms|update|password|website|education|degree|qualification|evidence|connection|collaboration|project|duration|status|pending|accepted|rejected|published|draft|expired|public|private|open|closed)\b/i;
+const frenchWords = /\b(le|la|les|des|du|de|une|un|votre|vos|vous|nous|dans|pour|avec|est|sont|aucun|aucune|créer|profil|compétence|recherche|candidature|entreprise|projet|opportunité|données|confidentialité|mentions|conditions|accès|partager|enregistrer|envoyer|vérification|équipe|adresse|mot de passe|français|anglais|parcours|réalisations|aspirations|disponibilité|rémunération|formation|expérience|lieu|compte|connexion|inscription|réseau|membre|évaluations|diplôme|équivalence|confirmer|annuler|supprimer|modifier|ajouter|publier|chargement|erreur|succès|étape|intitulé|secteur|établissement|justificatif|droit|données personnelles|mise à jour|responsable|hébergement|propriété|intellectuelle|hébergeur|courriel|bêta|gratuit|gratuite)\b/i;
+const missingFr = new Set(), missingEn = new Set();
+function checkText(value, source) {
+  const t = value.replace(/\s+/g," ").trim();
+  if (!t || t.length > 260 || /[{}<>$]/.test(t) || /^https?:/i.test(t)) return;
+  if (englishWords.test(t) && !frKeys.has(t)) missingFr.add(source + ": " + t);
+  if ((/[àâçéèêëîïôûùüÿœæ]/i.test(t) || frenchWords.test(t)) && !enKeys.has(t)) missingEn.add(source + ": " + t);
+}
+const html = read("public/index.html");
+for (const m of html.matchAll(/>([^<>]+)</g)) checkText(m[1],"HTML");
+for (const m of html.matchAll(/\b(?:placeholder|aria-label|title|alt|value)\s*=\s*["']([^"']+)["']/gi)) checkText(m[1],"HTML attribute");
+const app = read("public/app.js");
+for (const m of app.matchAll(/\btr\(\s*["']([^"']+)["']\s*\)/g)) checkText(m[1],"app tr()");
+for (const m of app.matchAll(/(?:textContent|placeholder|title|aria-label)\s*=\s*["']([^"']+)["']/g)) checkText(m[1],"app direct text");
+const server = read("src/server.js");
+for (const m of server.matchAll(/message\s*:\s*["']([^"']+)["']/g)) checkText(m[1],"server message");
+const legalEnglish = ["public/legal-notice-en.html","public/beta-terms-en.html","public/privacy-notice-en.html"];
+for (const file of legalEnglish) {
+  const body = read(file).replace(/2 Allée Nicolas Poussin/g,"").replace(/Saint-Cyr-l’École/g,"").replace(/CNIL/g,"");
+  for (const m of body.matchAll(/>([^<>]+)</g)) {
+    const t = m[1].trim();
+    if (/[àâçéèêëîïôûùüÿœæ]/i.test(t) || /\b(le|la|les|des|du|une|un|votre|vous|pour|avec|courriel|mentions|confidentialité|bêta|données|français|allemande|française)\b/i.test(t)) missingEn.add(file + ": " + t);
+  }
+}
+console.log("ZERILYS_LANGUAGE_AUDIT_COUNTS", JSON.stringify({frDictionaryKeys:frKeys.size,enDictionaryKeys:enKeys.size,missingFrenchTranslations:missingFr.size,missingEnglishTranslations:missingEn.size}));
+console.log("ZERILYS_LANGUAGE_MISSING_FR", JSON.stringify([...missingFr].slice(0,180)));
+console.log("ZERILYS_LANGUAGE_MISSING_EN", JSON.stringify([...missingEn].slice(0,180)));
+
 console.log("ZERILYS bilingual language overhaul applied.");
