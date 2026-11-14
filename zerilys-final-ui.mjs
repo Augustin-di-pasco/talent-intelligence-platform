@@ -172,6 +172,7 @@ const employerReplacements = [
 for (const [before, after] of employerReplacements) employerHtml = employerHtml.replaceAll(before, after);
 employerHtml = employerHtml.replace("39 € HT / mois","39 € HT / mois · 390 € HT / an");
 employerHtml = employerHtml.replace("Offre équipe","Offre Team");
+employerHtml = employerHtml.replace("Offre Team","Offre Team · 89 € HT / mois · 890 € HT / an");
 employerHtml = employerHtml.replace("89 € HT / mois","89 € HT / mois · 890 € HT / an");
 employerHtml = employerHtml.replace("179 € HT / mois","179 € HT / mois · 1 790 € HT / an");
 employerHtml = employerHtml.replace("29 € HT / mois pendant 12 mois","29 € HT / mois pendant 12 mois");
@@ -179,7 +180,7 @@ employerHtml = employerHtml.replace("Tarif partenaire bêta : 29 € HT / mois p
 employerHtml = employerHtml.replace("Tarif à définir","Tarif sur devis");
 employerHtml = employerHtml.replace("Sur mesure","Sur mesure · sur devis");
 if (!employerHtml.includes("Business : 179 € HT / mois")) {
-  employerHtml = employerHtml.replace("</section>", '<p class="employer-pricing-note"><strong>Offre Business :</strong> 179 € HT / mois ou 1 790 € HT / an. <strong>Tarifs partenaires bêta :</strong> Solo 29 €, Team 69 €, Business 139 € HT / mois, bloqués pendant 12 mois. <strong>Entreprise :</strong> sur devis.</p></section>');
+  employerHtml = employerHtml.replace("</main>", '<section class="employer-pricing-note" aria-label="Tarifs complémentaires"><strong>Offre Business :</strong> 179 € HT / mois ou 1 790 € HT / an. <strong>Tarifs partenaires bêta :</strong> Solo 29 €, Team 69 €, Business 139 € HT / mois, bloqués pendant 12 mois. <strong>Entreprise :</strong> sur devis.</section></main>');
 }
 write("public/index.html", employerHtml);
 let employerCss = read("public/styles.css");
