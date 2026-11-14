@@ -170,3 +170,11 @@ body>main>.closing{padding:44px 10px 72px!important}
 `;
 }
 write("public/styles.css",premiumCss);
+
+
+/* ZERILYS CSRF recovery on sign-in */
+let csrfRecoveryApp = read("public/app.js");
+const apiHelper = 'async function api(path,options={}){const r=await fetch("/api"+path,{...options,headers:{"Content-Type":"application/json",...(options.method&&options.method!=="GET"?{"X-CSRF-Token":csrfToken}:{}),...(options.headers||{})}});const data=await r.json().catch(()=>({}));if(!r.ok)throw new Error(window.ZERIHLINK_I18N?.translate(data.message||data.error||"Something went wrong")||data.message||data.error||"Something went wrong");return data}';
+const apiHelperFixed = 'async function api(path,options={}){const send=()=>fetch("/api"+path,{...options,headers:{"Content-Type":"application/json",...(options.method&&options.method!=="GET"?{"X-CSRF-Token":csrfToken}:{}),...(options.headers||{})}});let r=await send(),data=await r.json().catch(()=>({}));if(!r.ok&&data.error==="CSRF_INVALID"&&options.method&&options.method!=="GET"){const cfg=await fetch("/api/config",{cache:"no-store"}).then(x=>x.json());appConfig={...appConfig,...cfg};csrfToken=cfg.csrfToken||"";r=await send();data=await r.json().catch(()=>({}));}if(!r.ok)throw new Error(window.ZERIHLINK_I18N?.translate(data.message||data.error||"Something went wrong")||data.message||data.error||"Something went wrong");return data}';
+if (csrfRecoveryApp.includes(apiHelper)) csrfRecoveryApp = csrfRecoveryApp.replace(apiHelper, apiHelperFixed);
+write("public/app.js",csrfRecoveryApp);
