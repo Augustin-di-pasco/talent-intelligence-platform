@@ -69,6 +69,13 @@ const profileAuditTest=fs.readFileSync(path.join(scriptDir,"test/profile-bilingu
 fs.mkdirSync(path.join(root,"test"),{recursive:true});
 write("test/profile-bilingual-coverage.test.js",profileAuditTest);
 const testsDir=path.join(root,"test");
+const homeTestPath=path.join(testsDir,"homepage-focus.test.js");
+if(fs.existsSync(homeTestPath)){
+ let homeTest=fs.readFileSync(homeTestPath,"utf8");
+ homeTest=once(homeTest,"assert.match(html,/Les compétences réelles/);","assert.match(html,/Les compétences, prouvées/);","homepage headline test");
+ homeTest=once(homeTest,"assert.match(html,/Révélez vos compétences, trouvez un stage, une alternance/);","assert.match(html,/Un réseau professionnel pour relier compétences, réalisations et opportunités/);","homepage introduction test");
+ fs.writeFileSync(homeTestPath,homeTest);
+}
 for(const name of fs.readdirSync(testsDir).filter(name=>name.endsWith(".test.js"))){
  const file=path.join(testsDir,name),source=fs.readFileSync(file,"utf8");
  const aligned=source.replaceAll('const VERSION = "1.9.0-alpha.20"','const VERSION = "1.9.0-alpha.21"').replaceAll('1\\.9\\.0-alpha\\.20','1\\.9\\.0-alpha\\.21');
