@@ -96,6 +96,14 @@ if(server.includes(singleInviteNeedle))server=server.replace(singleInviteNeedle,
 
 fs.writeFileSync(path.join(root,"src/server.js"),server);
 const appSource=fs.readFileSync(path.join(root,"public/app.js"),"utf8");
+const i18nSource=fs.readFileSync(path.join(root,"public/i18n.js"),"utf8");
+for(const [label,source,terms] of [
+ ["APP",appSource,["Intl.DateTimeFormat","Intl.NumberFormat","toLocaleDateString","toLocaleString"]],
+ ["I18N",i18nSource,["localStorage","fetch(","document.documentElement.lang","/api/me/language","preferredLanguage","languagechange"]],
+ ["SERVER",server,["/api/me/language","preferredLanguage","language:","u.language"]]
+]){
+ for(const term of terms){const i=source.indexOf(term);if(i>=0)console.log("ZERILYS_LOCALE_DETAIL_"+label+"_"+term.replace(/[^a-z]/gi,"_"),source.slice(Math.max(0,i-120),Math.min(source.length,i+260)));}
+}
 for(const term of ["zerilys:languagechange","/api/me/language","toLocaleDateString","toLocaleString","Intl.DateTimeFormat"]){
  const i=appSource.indexOf(term);
  if(i>=0)console.log("ZERILYS_LANGUAGE_RUNTIME_"+term.replace(/[^a-z]/gi,"_"),appSource.slice(Math.max(0,i-250),Math.min(appSource.length,i+650)));
