@@ -7,6 +7,7 @@
   };
   let chosen="solo",period="monthly";
   const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const logged=()=>typeof me!=="undefined"&&!!me;
   function mount(){
     const cards=[...document.querySelectorAll(".pricing-card")];if(cards.length<4)return;
     const defs=[["CANDIDAT","Candidat","candidate","Accéder gratuitement"],["OFFRE RECRUTEUR","Solo","solo","Solo"],["OFFRE ÉQUIPE","Team","team","Team"],["OFFRE ENTREPRISE","Entreprise","business","Entreprise"]];
@@ -30,16 +31,16 @@
     m.querySelector("#zerilysBillingFeatures").innerHTML=p.features.map(x=>"<li>"+esc(x)+"</li>").join("");
     m.querySelector("#zerilysBillingNote").textContent=period==="annual"?"Facturation annuelle : "+amount.toLocaleString("fr-FR")+" € HT.":"Facturation mensuelle : "+amount.toLocaleString("fr-FR")+" € HT.";
     m.querySelector("#zerilysBillingError").textContent="";
-    const active=!!globalThis.me?.billing?.active;m.querySelector("#zerilysBillingPortal").classList.toggle("hidden",!active);m.querySelector("#zerilysBillingCheckout").classList.toggle("hidden",active);
+    const active=logged()&&!!me.billing?.active;m.querySelector("#zerilysBillingPortal").classList.toggle("hidden",!active);m.querySelector("#zerilysBillingCheckout").classList.toggle("hidden",active);
   }
   async function show(key){
     if(key==="candidate"){document.getElementById("joinOpen")?.click();return;}
     chosen=key;period="monthly";render();const m=document.getElementById("zerilysBillingModal");m.classList.remove("hidden");m.setAttribute("aria-hidden","false");
-    if(globalThis.me?.accountType==="company"){try{const d=await api("/me/billing");me.billing=d.billing;render();}catch{}}
+    if(logged()&&me.accountType==="company"){try{const d=await api("/me/billing");me.billing=d.billing;render();}catch{}}
   }
   async function checkout(){
     const error=document.getElementById("zerilysBillingError"),button=document.getElementById("zerilysBillingCheckout");error.textContent="";
-    if(!globalThis.me){openAuth("register");const type=document.getElementById("accountType");if(type){type.value="company";type.dispatchEvent(new Event("change",{bubbles:true}));}return;}
+    if(!logged()){openAuth("register");const type=document.getElementById("accountType");if(type){type.value="company";type.dispatchEvent(new Event("change",{bubbles:true}));}return;}
     if(me.accountType!=="company"){error.textContent="Un compte entreprise est nécessaire. L’accès candidat reste gratuit.";return;}
     button.disabled=true;button.textContent="Connexion sécurisée à Stripe…";
     try{const d=await api("/billing/checkout",{method:"POST",body:JSON.stringify({plan:chosen,interval:period})});location.assign(d.url);}
@@ -50,5 +51,5 @@
   document.addEventListener("click",e=>{const b=e.target.closest("[data-zerilys-plan]");if(!b)return;e.preventDefault();e.stopImmediatePropagation();show(b.dataset.zerilysPlan);},true);
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",mount,{once:true});else mount();
   const q=new URLSearchParams(location.search);if(q.get("billing")==="cancel")setTimeout(()=>toast("Paiement annulé. Aucun abonnement n’a été activé."),600);
-  if(q.get("billing")==="success")setTimeout(async()=>{if(!globalThis.me)return;try{const d=await api("/me/billing");me.billing=d.billing;toast(d.billing.active?"Votre abonnement ZERILYS est actif.":"Paiement reçu. Confirmation en cours.");}catch{}},1200);
+  if(q.get("billing")==="success")setTimeout(async()=>{if(!logged())return;try{const d=await api("/me/billing");me.billing=d.billing;toast(d.billing.active?"Votre abonnement ZERILYS est actif.":"Paiement reçu. Confirmation en cours.");}catch{}},1200);
 })();
