@@ -104,13 +104,32 @@ footer{background:#e8e5dc!important;color:var(--z-ink)!important}
   write("public/styles.css", css);
 }
 
+  css += String.raw`
+/* ZERILYS ATLAS HERO — monumental architectural landing */
+.z-atlas-hero{position:relative!important;min-height:clamp(570px,66vw,760px)!important;padding:0!important;overflow:hidden!important;background:linear-gradient(110deg,#f8f5ed 0%,#f2eee5 52%,#e9e4d8 100%)!important;border:1px solid var(--z-line)!important;border-radius:4px!important;box-shadow:var(--z-shadow)!important;color:var(--z-ink)!important}
+.z-hero-inner{display:grid;grid-template-columns:minmax(360px,.82fr) minmax(0,1.18fr);align-items:center;min-height:inherit;max-width:1600px;margin:auto;padding:clamp(34px,5vw,76px) clamp(24px,4vw,62px);gap:clamp(16px,3vw,48px)}
+.z-hero-copy{position:relative;z-index:3;max-width:590px;padding:12px 0}
+.z-eyebrow{display:flex;align-items:center;gap:11px;font:700 9px var(--display);letter-spacing:.19em;color:var(--z-copper);margin-bottom:24px}.z-eyebrow span{width:27px;height:1px;background:var(--z-copper)}
+.z-hero-copy h1{font:700 clamp(40px,5.2vw,76px)/1.02 var(--display)!important;letter-spacing:-.065em!important;max-width:10.5ch;margin:0 0 23px!important;color:var(--z-ink)!important}.z-hero-copy h1 em{display:block;color:var(--z-copper);font-style:normal}
+.z-hero-copy>p{max-width:45ch;font:400 clamp(14px,1.15vw,17px)/1.8 var(--body);color:#596b65;margin:0 0 30px}
+.z-hero-actions{display:flex;flex-wrap:wrap;gap:10px}.z-cta{display:inline-flex;align-items:center;justify-content:center;gap:26px;min-height:50px;padding:0 19px;border:1px solid var(--z-ink);border-radius:2px;text-decoration:none;font:700 11px var(--display);cursor:pointer}.z-cta span{font-size:16px}.z-cta-dark{background:var(--z-ink);color:#fffefa!important}.z-cta-light{background:transparent;color:var(--z-ink)}
+.z-hero-foot{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:45px;font:700 8px var(--display);letter-spacing:.12em;color:#6d7b75}.z-hero-foot i{width:3px;height:3px;border-radius:50%;background:var(--z-copper)}
+.z-hero-visual{position:relative;min-width:0;align-self:stretch;display:flex;align-items:center;justify-content:center;isolation:isolate}.z-scene-frame{position:relative;width:100%;max-width:840px;aspect-ratio:1.24;display:grid;place-items:center;overflow:hidden;background:radial-gradient(ellipse at 52% 48%,#315064 0%,#1c3748 46%,#102432 100%);border:1px solid rgba(182,110,73,.45);box-shadow:0 28px 75px rgba(20,39,48,.22)}
+.z-scene-frame:before,.z-scene-frame:after{content:'';position:absolute;inset:14px;border:1px solid rgba(241,220,191,.24);pointer-events:none}.z-scene-frame:after{inset:24px;border-color:rgba(241,220,191,.12)}.z-atlas-art{display:block;width:100%;height:100%;position:relative;z-index:1}
+.z-scene-label{position:absolute;z-index:3;left:18px;right:18px;display:flex;justify-content:space-between;gap:10px;color:#f4e8d6;font:700 8px var(--display);letter-spacing:.16em}.z-scene-label b{color:#e5b98e}.z-scene-top{top:16px}.z-scene-bottom{bottom:16px}
+.z-scene-node{position:absolute;z-index:4;display:grid;gap:4px;padding:13px 15px;background:rgba(250,248,241,.95);border:1px solid rgba(182,110,73,.55);box-shadow:0 14px 32px rgba(12,31,42,.16);min-width:160px}.z-scene-node small{font:700 8px var(--display);letter-spacing:.14em;color:var(--z-copper)}.z-scene-node b{font:700 14px var(--display);color:var(--z-ink)}.z-scene-node span{font:400 9px var(--body);color:#66766f}.z-node-talent{left:-16px;top:25%}.z-node-company{right:-10px;bottom:22%}
+@media(max-width:1050px){.z-hero-inner{grid-template-columns:1fr;gap:24px}.z-hero-copy{max-width:760px}.z-hero-copy h1{max-width:13ch}.z-hero-visual{min-height:440px}.z-scene-frame{max-width:760px}.z-node-talent{left:0}.z-node-company{right:0}}
+@media(max-width:600px){.z-atlas-hero{min-height:0!important}.z-hero-inner{padding:30px 18px 22px;gap:18px}.z-hero-copy h1{font-size:clamp(37px,11vw,54px)!important}.z-hero-copy>p{font-size:13px}.z-hero-foot{margin-top:26px;font-size:7px;gap:7px}.z-hero-visual{min-height:300px}.z-scene-frame{aspect-ratio:1.04}.z-scene-node{min-width:0;padding:9px 10px}.z-scene-node b{font-size:11px}.z-scene-node span{font-size:8px}.z-node-talent{left:-3px;top:18%}.z-node-company{right:-3px;bottom:13%}.z-scene-label{font-size:6px;left:10px;right:10px}.z-scene-top{top:10px}.z-scene-bottom{bottom:10px}}
+`;
+  write("public/styles.css", css);
+
 let app = read("public/app.js");
 if (!app.includes("ZERILYS ATLAS — immersive home architecture")) {
   app += String.raw`
 
 /* ZERILYS ATLAS — immersive home architecture */
 (() => {
- const scene = `
+ const scene = \`
  <svg class="z-atlas-art" viewBox="0 0 1000 720" role="img" aria-label="Atlas architectural mondial reliant talents et organisations" xmlns="http://www.w3.org/2000/svg">
   <defs>
    <linearGradient id="zOcean" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#294c61"/><stop offset=".55" stop-color="#172f40"/><stop offset="1" stop-color="#0d202d"/></linearGradient>
@@ -168,8 +187,8 @@ if (!app.includes("ZERILYS ATLAS — immersive home architecture")) {
   </g>
   <g fill="url(#zGlow)"><circle cx="290" cy="466" r="55"/><circle cx="795" cy="445" r="60"/><circle cx="430" cy="180" r="45"/></g>
   <path d="M90 640Q340 600 560 625T960 620" fill="none" stroke="#b66e49" stroke-opacity=".38" stroke-width="1.5"/>
- </svg>`;
- const heroMarkup = `
+ </svg>\`;
+ const heroMarkup = \`
   <div class="z-hero-inner">
    <div class="z-hero-copy">
     <div class="z-eyebrow"><span></span> THE GLOBAL PROFESSIONAL ATLAS</div>
@@ -189,7 +208,7 @@ if (!app.includes("ZERILYS ATLAS — immersive home architecture")) {
     <div class="z-scene-node z-node-company"><small>02 / ORGANISATION</small><b>Entreprises</b><span>Recrutement · Missions · Projets</span></div>
    </div>
   </div>
- `;
+ \`;
  const run = () => {
   const hero = document.querySelector("body>main>.candidate-hero,.candidate-hero");
   if (hero && !hero.dataset.zAtlasBuilt) {
@@ -220,7 +239,7 @@ if (!app.includes("ZERILYS ATLAS — immersive home architecture")) {
  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded",run,{once:true});
  else run();
 })();
-`;
+`.replaceAll("\\`", "`");
   write("public/app.js", app);
 }
 console.log("ZERILYS new atlas art direction installed.");
