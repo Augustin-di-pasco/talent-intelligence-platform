@@ -152,7 +152,7 @@ input,select,textarea{accent-color:var(--z-cyan)}
 }
 `;
 
-css += String.raw\`
+css += String.raw`
 /* ZERILYS FUTURE SYSTEM — FULL PAGE PASS */
 :root{
  --z-bg:#050c16;--z-surface:rgba(12,24,38,.82);--z-edge:rgba(122,194,211,.20);
@@ -266,7 +266,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
  .pricing-section{border-radius:16px!important}
  .pricing-card:hover{transform:none!important}
 }
-\`;
+`;
 
 fs.writeFileSync(cssPath, css);
 console.log("Refonte visuelle ZERILYS appliquée aux sections inférieures et aux espaces entreprise.");
