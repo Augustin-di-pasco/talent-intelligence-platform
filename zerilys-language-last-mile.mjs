@@ -122,6 +122,10 @@ const dateIndex=appSource.lastIndexOf("Intl.DateTimeFormat");
 if(dateIndex>=0)console.log("ZERILYS_DATE_FORMAT_LOGIC",appSource.slice(Math.max(0,dateIndex-180),Math.min(appSource.length,dateIndex+240)));
 const i18nChange=i18nSource.lastIndexOf("languagechange");
 if(i18nChange>=0)console.log("ZERILYS_I18N_CHANGE_LOGIC",i18nSource.slice(Math.max(0,i18nChange-260),Math.min(i18nSource.length,i18nChange+300)));
+for(const [label,source,term] of [["APP","app", "languagePreferenceUserId"],["APP","app","zerihlink:languagechange"],["APP","app","preferredLanguage"],["SERVER","server","preferredLanguage"]]){
+ const data=label==="APP"?appSource:server;
+ let pos=-1,n=0;while((pos=data.indexOf(term,pos+1))>=0&&n<8){console.log("ZERILYS_ALL_LANGUAGE_OCCURRENCES_"+label+"_"+term.replace(/[^a-z]/gi,"_")+"_"+n,data.slice(Math.max(0,pos-180),Math.min(data.length,pos+420)));n++;}
+}
 const meIndex=server.indexOf('"/api/me"');
 if(meIndex>=0)console.log("ZERILYS_SERVER_ME_ROUTE",server.slice(Math.max(0,meIndex-260),Math.min(server.length,meIndex+850)));
 const langRoute=server.indexOf("/api/me/language");
