@@ -13,7 +13,7 @@ test("all profile mutations refresh the canonical profile and dependent surfaces
  for(const [label,snippet] of [
   ["skill removal",'me=d.user;await syncProfileSurfaces();selectSignal("capabilities")'],
   ["evidence submission",'await syncProfileSurfaces();selectSignal("evidence")'],
-  ["trajectory removal",'await syncProfileSurfaces();selectSignal("trajectory");toast("Élément de parcours supprimé.")]'],
+  ["trajectory removal",'await syncProfileSurfaces();selectSignal("trajectory");toast("Élément de parcours supprimé.")'],
   ["experience creation",'$("#trajectoryExperienceDescription").value="";await syncProfileSurfaces();selectSignal("trajectory")'],
   ["education creation",'$("#trajectoryEducationLevel").value="";await syncProfileSurfaces();selectSignal("trajectory")'],
   ["qualification submission",'await syncProfileSurfaces();toast("Justificatif transmis. Le badge sera attribué après vérification.")']
