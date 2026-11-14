@@ -37,7 +37,7 @@ const additions={
   "Un abonnement actif est nécessaire pour inviter des membres.":"An active subscription is required to invite team members.",
   "Un abonnement actif est nécessaire pour publier une offre.":"An active subscription is required to publish an offer."
 };
-const block='  // ZERILYS_AUDIT_BILLING_LANGUAGE\\n  Object.assign(fr,{\"A professional network connecting skills, evidence and opportunities.\":\"Un réseau professionnel pour relier compétences, réalisations et opportunités.\"});\\n  Object.assign(en,'+JSON.stringify(additions,null,2)+');\\n';
+const block='  // ZERILYS_AUDIT_BILLING_LANGUAGE\\n  Object.assign(fr,{\\n    \\\"A professional network connecting skills, evidence and opportunities.\\\": \\\"Un réseau professionnel pour relier compétences, réalisations et opportunités.\\\"\\n  });\\n  Object.assign(en,'+JSON.stringify(additions,null,2)+');\\n';
 i18n=replace(i18n,'  let language = "fr";',block+'  let language = "fr";',"language dictionary");write("public/i18n.js",i18n);
 }
 let fr=read("public/beta-terms.html");
