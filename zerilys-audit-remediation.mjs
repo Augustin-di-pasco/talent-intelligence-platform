@@ -168,6 +168,8 @@ const billingFlowTest=fs.readFileSync(new URL("./test/billing-flow-guard.test.js
 write("test/billing-flow-guard.test.js",billingFlowTest);
 const billingSessionTest=fs.readFileSync(new URL("./test/billing-session.test.js",import.meta.url),"utf8");
 write("test/billing-session.test.js",billingSessionTest);
+const legalBillingTest=fs.readFileSync(new URL("./test/legal-billing-disclosure.test.js",import.meta.url),"utf8");
+write("test/legal-billing-disclosure.test.js",legalBillingTest);
 let css=read("public/styles.css");
 if(!css.includes("/* ZERILYS refined visual hierarchy */")){
  css+='\n/* ZERILYS refined visual hierarchy */\n.hero{padding-top:clamp(58px,7vw,82px);padding-bottom:clamp(56px,6vw,76px);min-height:540px}.hero h1{font-size:clamp(32px,3.9vw,48px);line-height:1.08;letter-spacing:-.045em;max-width:12ch}.hero-text{font-size:15px;line-height:1.65;max-width:470px}.section{padding-top:clamp(64px,7vw,86px);padding-bottom:clamp(64px,7vw,86px)}.section-head h2,.section-heading h2{font-size:clamp(27px,3vw,36px);line-height:1.12;letter-spacing:-.04em}.trust-section h2{font-size:clamp(28px,3vw,35px);line-height:1.12}.closing h2{font-size:clamp(30px,3.8vw,42px);line-height:1.1}.modal-card h2{font-size:25px;line-height:1.16}@media(max-width:680px){.hero{padding:46px 20px 50px;min-height:unset}.hero h1{font-size:clamp(30px,7vw,40px)}.hero-text{font-size:14px}.section{padding-top:54px;padding-bottom:54px}.section-head h2,.section-heading h2{font-size:clamp(25px,6vw,32px)}.closing h2{font-size:32px}}\n';
