@@ -10,7 +10,6 @@ if (!css.includes("ZERILYS — ATLAS ART DIRECTION 2026")) {
   css += String.raw`
 
 /* ZERILYS — ATLAS ART DIRECTION 2026 */
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
 :root{
  --z-bg:#f3f0e9;--z-paper:#fbfaf6;--z-ink:#172b29;--z-muted:#687873;
  --z-line:rgba(23,43,41,.15);--z-copper:#b66e49;--z-blue:#244b63;
@@ -122,6 +121,12 @@ footer{background:#e8e5dc!important;color:var(--z-ink)!important}
 @media(max-width:600px){.z-atlas-hero{min-height:0!important}.z-hero-inner{padding:30px 18px 22px;gap:18px}.z-hero-copy h1{font-size:clamp(37px,11vw,54px)!important}.z-hero-copy>p{font-size:13px}.z-hero-foot{margin-top:26px;font-size:7px;gap:7px}.z-hero-visual{min-height:300px}.z-scene-frame{aspect-ratio:1.04}.z-scene-node{min-width:0;padding:9px 10px}.z-scene-node b{font-size:11px}.z-scene-node span{font-size:8px}.z-node-talent{left:-3px;top:18%}.z-node-company{right:-3px;bottom:13%}.z-scene-label{font-size:6px;left:10px;right:10px}.z-scene-top{top:10px}.z-scene-bottom{bottom:10px}}
 `;
   write("public/styles.css", css);
+
+let html = read("public/index.html");
+if (!html.includes("fonts.googleapis.com/css2?family=DM+Sans")) {
+  html = html.replace("</head>", "<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"><link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin><link href=\"https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap\" rel=\"stylesheet\">" + "</head>");
+  write("public/index.html", html);
+}
 
 let app = read("public/app.js");
 if (!app.includes("ZERILYS ATLAS — immersive home architecture")) {
