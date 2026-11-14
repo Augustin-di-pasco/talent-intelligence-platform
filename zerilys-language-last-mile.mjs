@@ -56,7 +56,9 @@ const rows=[
 ["Échanger avec l’équipe","Échanger avec l’équipe","Talk to the team"],
 ["Aucune évaluation autorisée par le candidat.","Aucune évaluation autorisée par le candidat.","No assessment is authorised by the candidate."],
 ["Je n'ai pas utilisé d'IA","Je n’ai pas utilisé d’IA","I did not use AI"],
-["Je n’ai pas utilisé d’IA","Je n’ai pas utilisé d’IA","I did not use AI"]
+["Je n’ai pas utilisé d’IA","Je n’ai pas utilisé d’IA","I did not use AI"],
+["Exécution réalisée dans un service isolé distinct. Le code n'est pas exécuté par le serveur de la plateforme.","Exécution réalisée dans un service isolé distinct. Le code n’est pas exécuté par le serveur de la plateforme.","Execution takes place in a separate isolated service. Code is not executed by the platform server."],
+["Aucune évaluation autorisée par le candidat.","Aucune évaluation autorisée par le candidat.","No assessment is authorised by the candidate."]
 ];
 if(!source.includes("ZERILYS final all-surface bilingual translations")){
  const at=source.indexOf('  let language = "fr";');
@@ -68,8 +70,8 @@ if(!source.includes("ZERILYS final all-surface bilingual translations")){
 }
 fs.writeFileSync(file,source);
 const server=fs.readFileSync(path.join(root,"src/server.js"),"utf8");
-for(const term of ["Exécution réalisée dans un service isolé distinct","Reset your ZERILYS password","Your ZERILYS private beta invitation","New candidate interest","Application status updated"]){
+for(const term of ["Reset your ZERILYS password","Your ZERILYS private beta invitation","New candidate interest","Application status updated"]){
  const i=server.indexOf(term);
- if(i>=0)console.log("ZERILYS_SERVER_CONTEXT_"+term.replace(/[^a-z]/gi,"_"),server.slice(Math.max(0,i-320),Math.min(server.length,i+900)));
+ if(i>=0)for(let j=Math.max(0,i-900),n=0;j<Math.min(server.length,i+1600);j+=650,n++)console.log("ZERILYS_EMAIL_CONTEXT_"+term.replace(/[^a-z]/gi,"_")+"_"+n,server.slice(j,Math.min(server.length,j+650)));
 }
 console.log("ZERILYS final all-surface bilingual translations applied.");
