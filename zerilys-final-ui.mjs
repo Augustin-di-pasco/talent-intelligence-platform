@@ -314,3 +314,92 @@ finalRepairApp+=String.raw`
 }
 write("public/app.js",finalRepairApp);
 console.log("ZERILYS final visual repair applied.");
+
+
+/* ZERILYS premium consolidation: compact French pricing and protected orbital hero */
+let consolidatedHtml=read("public/index.html");
+for(const pair of [
+ ["ENGINEERING · SCIENCE · FINANCE · BUSINESS · RESEARCH","INGÉNIERIE · SCIENCES · FINANCE · COMMERCE · RECHERCHE"],
+ ["Professional identity","Identité professionnelle"],
+ ["Evolving professional profile","Profil professionnel évolutif"],
+ ["Skills and evidence","Compétences et réalisations"],
+ ["Discovery and opportunities","Découverte et opportunités"],
+ ["Proposed candidate access","Accès candidat gratuit"],
+ ["SPECIALIST RECRUITMENT · EMPLOYER OFFER","RECRUTEMENT SPÉCIALISÉ · OFFRES ENTREPRISES"],
+ ["Recruit differently.","Recrutez autrement."],
+ ["A workspace to identify rare expertise, understand demonstrated capabilities and manage conversations with talent.","Un espace pour repérer les expertises rares, comprendre les compétences démontrées et échanger avec les talents."],
+ ["Shared recruitment workspace","Espace de recrutement partagé"],
+ ["Recruiter and viewer roles","Rôles recruteur et lecteur"],
+ ["Opportunity coordination","Coordination des opportunités"],
+ ["Specialist talent search","Recherche de talents spécialisés"],
+ ["Profiles, skills and evidence","Profils, compétences et réalisations"],
+ ["Opportunity publishing and tracking","Publication et suivi des opportunités"],
+ ["Application pipeline management","Suivi des candidatures"],
+ ["Dedicated deployment and support","Déploiement et accompagnement dédiés"],
+ ["Configuration according to needs","Paramétrage selon vos besoins"],
+ ["Specific terms and support","Conditions et accompagnement spécifiques"],
+ ["Case-by-case study","Étude personnalisée"],
+ ["Create a company account ↗","Créer un compte entreprise ↗"],
+ ["Create my profile ↗","Créer mon profil ↗"]
+]) consolidatedHtml=consolidatedHtml.replaceAll(pair[0],pair[1]);
+consolidatedHtml=consolidatedHtml.replace(/<section class="employer-pricing-note" aria-label="[^"]*">[\s\S]*?<\/section>/g,"");
+write("public/index.html",consolidatedHtml);
+
+let consolidatedCss=read("public/styles.css");
+if(!consolidatedCss.includes("ZERILYS compact pricing and circle cleanup")){
+consolidatedCss += [
+"/* ZERILYS compact pricing and circle cleanup */",
+".pricing-section{padding-block:clamp(34px,4vw,58px)!important}",
+".pricing-grid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:14px!important;align-items:stretch!important}",
+".pricing-card{min-width:0!important;min-height:0!important;height:auto!important;padding:22px 21px 19px!important;border-radius:15px!important;display:flex!important;flex-direction:column!important;background:linear-gradient(155deg,rgba(19,31,46,.94),rgba(11,20,32,.96))!important;border:1px solid rgba(155,183,208,.18)!important;box-shadow:none!important}",
+".pricing-card.pricing-featured{border-color:rgba(100,211,204,.48)!important;transform:none!important}",
+".pricing-card .pricing-kicker{font-size:9px!important;letter-spacing:.17em!important;color:#76d8d1!important;margin-bottom:14px!important}",
+".pricing-card h3{font-size:clamp(17px,1.35vw,21px)!important;line-height:1.2!important;margin:0 0 16px!important;letter-spacing:-.025em!important}",
+".pricing-card .pricing-price{font-size:clamp(18px,1.55vw,24px)!important;line-height:1.25!important;letter-spacing:-.035em!important;margin:0 0 18px!important;color:#eef3f8!important;font-weight:700!important;overflow-wrap:normal!important}",
+".pricing-card ul{display:grid!important;gap:9px!important;margin:0 0 20px!important;padding:0!important;list-style:none!important}",
+".pricing-card li{font-size:11px!important;line-height:1.55!important;color:#b8c6d5!important}",
+".pricing-card .pricing-foot{margin-top:auto!important;padding-top:13px!important;border-top:1px solid rgba(155,183,208,.14)!important;font-size:10px!important;line-height:1.45!important;color:#91a8bd!important}",
+".pricing-card .btn{margin-top:auto!important;align-self:flex-start!important}",
+".pricing-disclaimer{max-width:1000px!important;margin:18px auto 0!important;font-size:11px!important;line-height:1.65!important;color:#91a5ba!important}",
+".pricing-cta{display:flex!important;align-items:center!important;gap:16px!important;flex-wrap:wrap!important;margin-top:20px!important}",
+".pricing-cta span{font-size:11px!important;color:#9aadc0!important}",
+".candidate-core .candidate-monogram{width:auto!important;height:auto!important;min-width:0!important;min-height:0!important;padding:0!important;margin:0 0 8px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important}",
+".candidate-core .candidate-monogram .candidate-hero-initials,.candidate-core .candidate-monogram>span{width:auto!important;height:auto!important;padding:0!important;margin:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;font-size:clamp(25px,3vw,34px)!important;letter-spacing:.08em!important;line-height:1!important}",
+".candidate-core:not(.is-member)>b,.candidate-core>small,.candidate-core>span{display:none!important}",
+".candidate-core.is-member>b{display:block!important}",
+"@media(max-width:1050px){.pricing-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.pricing-card{padding:20px!important}}",
+"@media(max-width:560px){.pricing-grid{grid-template-columns:1fr!important;gap:10px!important}.pricing-card{padding:19px!important}.pricing-card h3{font-size:18px!important}.pricing-card .pricing-price{font-size:20px!important}}"
+].join("\n")+"\n";
+}
+write("public/styles.css",consolidatedCss);
+
+let consolidatedApp=read("public/app.js");
+if(!consolidatedApp.includes("ZERILYS premium content consolidation")){
+consolidatedApp += [
+"/* ZERILYS premium content consolidation */",
+"(() => {",
+" const norm=s=>(s||'').replace(/\\s+/g,' ').trim().toLocaleUpperCase('fr');",
+" const exact=['01 PROFIL','02 RÉALISATIONS','03 OPPORTUNITÉS','04 PROJETS'];",
+" const apply=()=>{",
+"   const leaves=[...document.querySelectorAll('body *')].filter(el=>el.children.length===0&&exact.includes(norm(el.textContent)));",
+"   if(leaves.length===4){let common=leaves[0].parentElement;while(common&&!leaves.every(el=>common.contains(el)))common=common.parentElement;if(common&&common!==document.body&&common.tagName!=='MAIN'){const content=norm(common.textContent);if(exact.every(label=>content.includes(label))&&content.length<260)common.remove();}}",
+"   const core=document.querySelector('.candidate-core');",
+"   const monogram=core?.querySelector('.candidate-monogram');",
+"   if(monogram){monogram.style.setProperty('border','0','important');monogram.style.setProperty('background','transparent','important');monogram.style.setProperty('box-shadow','none','important');monogram.style.setProperty('border-radius','0','important');}",
+"   if(core){core.querySelectorAll(':scope > small,:scope > span').forEach(el=>el.remove());if(!core.classList.contains('is-member'))core.querySelectorAll(':scope > b').forEach(el=>el.remove());}",
+"   const data=[",
+"     {k:'CANDIDAT',h:'Identité professionnelle',p:'Gratuit',items:['Profil professionnel évolutif','Compétences et réalisations','Découverte et opportunités'],foot:'Accès candidat gratuit'},",
+"     {k:'RECRUTEUR',h:'Offre Solo',p:'39 € HT / mois · 390 € HT / an',items:['Recherche de talents spécialisés','Profils, compétences et réalisations','Publication et suivi des opportunités','Suivi des candidatures'],foot:'Tarif standard'},",
+"     {k:'ÉQUIPE',h:'Offre Team',p:'89 € HT / mois · 890 € HT / an',items:['Espace de recrutement partagé','Rôles recruteur et lecteur','Coordination des opportunités','Gestion d’équipe'],foot:'Tarif standard'},",
+"     {k:'ENTREPRISE',h:'Offre Entreprise',p:'Sur devis',items:['Déploiement et accompagnement dédiés','Paramétrage selon vos besoins','Conditions et accompagnement spécifiques'],foot:'Étude personnalisée'}",
+"   ];",
+"   document.querySelectorAll('.pricing-card').forEach((card,index)=>{const d=data[index];if(!d)return;const kicker=card.querySelector('.pricing-kicker');if(kicker)kicker.textContent=d.k;const heading=card.querySelector('h3');if(heading)heading.textContent=d.h;const price=card.querySelector('.pricing-price');if(price)price.textContent=d.p;const list=card.querySelector('ul');if(list)list.replaceChildren(...d.items.map(value=>{const li=document.createElement('li');li.textContent=value;return li;}));const foot=card.querySelector('.pricing-foot');if(foot)foot.textContent=d.foot;});",
+"   const disclaimer=document.querySelector('.pricing-disclaimer');if(disclaimer)disclaimer.textContent='Pendant la bêta, l’accès candidat est gratuit. Les tarifs entreprises seront confirmés avant toute souscription ; aucun paiement en ligne n’est activé.';",
+" };",
+" if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();",
+" const observer=new MutationObserver(()=>apply());observer.observe(document.documentElement,{childList:true,subtree:true});",
+"})();"
+].join("\n")+"\n";
+}
+write("public/app.js",consolidatedApp);
+console.log("ZERILYS premium consolidation applied.");
