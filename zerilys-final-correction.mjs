@@ -121,7 +121,7 @@ if (!app.includes("ZERILYS final premium corrections — deterministic")) {
 }
 write("public/app.js", app);
 
-write("public/robots.txt", "User-agent: *\\nDisallow: /\\n");
+write("public/robots.txt", "User-agent: *\\nAllow: /\\n");
 for (const page of ["public/index.html","public/legal-notice.html","public/beta-terms.html","public/privacy-notice.html"]) {
   const full = path.join(root, page);
   if (!fs.existsSync(full)) continue;
