@@ -247,4 +247,89 @@ let launchCss = read("public/styles.css");
 if (!launchCss.includes("/* ZERILYS public legal footer */")) launchCss += '\n/* ZERILYS public legal footer */\n.legal-footer{display:flex;gap:18px;flex-wrap:wrap;justify-content:flex-end;font-size:11px}.legal-footer a{color:#9fb1c5;text-decoration:none}.legal-footer a:hover{color:#8fe0d2}#authModal .registration-status{margin:14px 0;padding:13px 15px;border:1px solid rgba(103,228,223,.3);border-radius:12px;background:#143b3a55;color:#d4f4ed;font-size:12px;line-height:1.6}#authModal .registration-status.hidden{display:none}@media(max-width:600px){.legal-footer{justify-content:flex-start;width:100%}}\n';
 write("public/styles.css", launchCss);
 
+
+ // ZERILYS final interface polish
+ let finalI18n = read("public/i18n.js");
+ if (finalI18n.includes("const fr = {")) {
+   const entries = {
+     "Evaluation":"Évaluation",
+     "Evaluation & feedback":"Évaluation et retours",
+     "Aspiration":"Aspirations",
+     "Skills":"Compétences",
+     "Search profiles":"Rechercher des profils",
+     "No profiles match your search.":"Aucun profil ne correspond à votre recherche.",
+     "No one matches this role yet.":"Aucun profil ne correspond encore à ce poste.",
+     "No results found":"Aucun résultat trouvé",
+     "Your profile is visible to ZERILYS members and through its public link. You can limit anonymous discovery at any time.":"Votre profil est visible des membres ZERILYS et via son lien public. Vous pouvez limiter sa visibilité aux visiteurs non connectés à tout moment.",
+     "Real skills. Beyond the CV.":"Les compétences réelles. Au-delà du CV.",
+     "Professional profile ready for what comes next":"Votre profil professionnel est prêt pour la suite",
+     "Required skills":"Compétences recherchées",
+     "Project objectives":"Objectifs du projet",
+     "Project overview":"Présentation du projet",
+     "Project timeline":"Calendrier du projet",
+     "Expected contribution":"Contribution attendue"
+   };
+   const rows = Object.entries(entries).map(([k,v]) => "    "+JSON.stringify(k)+": "+JSON.stringify(v)+",").join("\n");
+   finalI18n = finalI18n.replace("const fr = {", "const fr = {\n    // ZERILYS final interface polish\n"+rows);
+   write("public/i18n.js", finalI18n);
+ }
+ let finalHtml = read("public/index.html");
+ finalHtml = finalHtml.replace(
+   "La bêta est gratuite. Aucun paiement, abonnement ou achat en ligne n’est activé. Les conditions commerciales seront communiquées avant toute offre payante.",
+   "Tarif bêta : 0 € pour les candidats et les entreprises pilotes invitées. Aucun paiement ni abonnement n’est activé. Les tarifs commerciaux seront annoncés avant toute souscription."
+ );
+ write("public/index.html", finalHtml);
+ let finalApp = read("public/app.js");
+ if (!finalApp.includes("ZERILYS keyboard search and layout polish")) {
+   finalApp += String.raw`
+/* ZERILYS keyboard search and layout polish */
+(() => {
+  const improve = () => {
+    document.querySelectorAll('input[type="search"],input[placeholder*="recher"],input[placeholder*="search"]').forEach(input => {
+      if (input.dataset.zerilysEnter) return;
+      input.dataset.zerilysEnter = "1";
+      input.addEventListener("keydown", event => {
+        if (event.key !== "Enter") return;
+        const form = input.closest("form");
+        if (form && form.requestSubmit) form.requestSubmit();
+      });
+    });
+    document.querySelectorAll("h1,h2,h3").forEach(el => {
+      const t = (el.textContent || "").toLocaleLowerCase("fr");
+      if (t.includes("les compétences réelles") || t.includes("real skills")) {
+        el.style.fontSize = "clamp(28px,4.2vw,54px)";
+        el.style.lineHeight = "1.04";
+        el.style.maxWidth = "13ch";
+        el.style.letterSpacing = "-.045em";
+      }
+    });
+    document.querySelectorAll("button,a,select").forEach(el => {
+      const t = ((el.textContent || "") + " " + (el.getAttribute("aria-label") || "")).toLocaleLowerCase("fr");
+      if (/(^|\\W)(fr|en|français|english|langue|language)(\\W|$)/.test(t)) {
+        el.style.color = "#f5f7fb";
+        el.style.webkitTextFillColor = "#f5f7fb";
+      }
+    });
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", improve);
+  else improve();
+  new MutationObserver(improve).observe(document.documentElement,{childList:true,subtree:true});
+})();
+`;
+ }
+ write("public/app.js", finalApp);
+ let finalCss = read("public/styles.css");
+ if (!finalCss.includes("/* ZERILYS final visual hierarchy */")) {
+   finalCss += `
+/* ZERILYS final visual hierarchy */
+:root{scroll-behavior:smooth}
+.home-hero h1,.hero h1,.hero-title{font-size:clamp(28px,4.2vw,54px);line-height:1.04;letter-spacing:-.045em;max-width:13ch}
+#profileModal input,#profileModal textarea,#editModal input,#editModal textarea{width:100%;min-height:46px}
+#profileModal select,#editModal select{color:#f5f7fb}
+@media(min-width:900px){.home-hero,.hero{max-width:1240px;margin-inline:auto}.home-hero{padding-block:clamp(34px,5vw,76px)}}
+@media(max-width:680px){.home-hero h1,.hero h1,.hero-title{font-size:clamp(29px,8vw,42px)}}
+`;
+ }
+ write("public/styles.css", finalCss);
+ 
 console.log("ZERILYS public-beta legal and candidate-profile layer applied.");
