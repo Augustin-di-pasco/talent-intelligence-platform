@@ -394,7 +394,7 @@ consolidatedApp += [
 "     {k:'ENTREPRISE',h:'Offre Entreprise',p:'Sur devis',items:['Déploiement et accompagnement dédiés','Paramétrage selon vos besoins','Conditions et accompagnement spécifiques'],foot:'Étude personnalisée'}",
 "   ];",
 "   document.querySelectorAll('.pricing-card').forEach((card,index)=>{const d=data[index];if(!d||card.dataset.zerilysPremiumApplied==='1')return;card.dataset.zerilysPremiumApplied='1';const kicker=card.querySelector('.pricing-kicker');if(kicker)kicker.textContent=d.k;const heading=card.querySelector('h3');if(heading)heading.textContent=d.h;const price=card.querySelector('.pricing-price');if(price){price.textContent=d.p;price.style.display=d.p?'':'none';}const list=card.querySelector('ul');if(list)list.replaceChildren(...d.items.map(value=>{const li=document.createElement('li');li.textContent=value;return li;}));const foot=card.querySelector('.pricing-foot');if(foot)foot.textContent=d.foot;});",
-"   const disclaimer=document.querySelector('.pricing-disclaimer');if(disclaimer)disclaimer.textContent='Tarifs partenaires bêta : Solo 29 € HT/mois · Team 69 € HT/mois · Business 139 € HT/mois, garantis pendant 12 mois. Aucun paiement en ligne n’est activé.';",
+"   const disclaimer=document.querySelector('.pricing-disclaimer');if(disclaimer)disclaimer.textContent='Offre Business standard : 179 € HT/mois ou 1 790 € HT/an. Tarifs partenaires bêta garantis 12 mois : Solo 29 € · Team 69 € · Business 139 € HT/mois. Aucun paiement en ligne n’est activé.';",
 " };",
 " if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();",
 " const observer=new MutationObserver(()=>apply());observer.observe(document.documentElement,{childList:true,subtree:true});",
