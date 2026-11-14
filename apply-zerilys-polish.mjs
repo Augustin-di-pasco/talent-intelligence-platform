@@ -400,3 +400,5 @@ await import("./zerilys-profile-audit.mjs");
 // The final language audit runs separately from the production build to keep
 // build output concise and prevent diagnostic-only checks from blocking deployment.
 
+
+await import("./zerilys-employer-layout-repair.mjs");
