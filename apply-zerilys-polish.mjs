@@ -64,6 +64,9 @@ html = once(html,
   "Les formules et tarifs seront définis avec les premiers partenaires du pilote. Aucun paiement ni abonnement n’est activé à ce stade.",
   "pricing disclaimer");
 html = once(html, "Recruter autrement.<br><em>Avec plus de signal.</em>", "Recruter autrement.<br><em>Avec des compétences mieux documentées.</em>", "recruitment headline");
+if (!html.includes('id="global-pulse"')) {
+  html = html.replace("</main>", '<span id="global-pulse" class="sr-only" aria-hidden="true"></span></main>');
+}
 write("public/index.html", html);
 
 let app = read("public/app.js");
