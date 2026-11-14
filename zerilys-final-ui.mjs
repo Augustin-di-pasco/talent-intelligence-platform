@@ -8,7 +8,7 @@ const hook='$("#userMenu").setAttribute("aria-label","Open my candidate profile"
 if(app.includes(hook)&&!app.includes("syncCandidateHero()"))app=app.replace(hook,'$("#userMenu").setAttribute("aria-label","Ouvrir mon profil professionnel");syncCandidateHero()}');
 const emptyStart=app.indexOf("if(!d.users.length){el.innerHTML=");
 if(emptyStart>=0&&!app.includes("search-empty-state")){
- const emptyEnd=app.indexOf("return;}",emptyStart)+7;
+ const emptyEnd=app.indexOf("return;}",emptyStart)+8;
  if(emptyEnd<7)throw new Error("Missing search empty state");
  app=app.slice(0,emptyStart)+'if(!d.users.length){const box=document.createElement("div");box.className="search-empty-state";const title=document.createElement("b"),detail=document.createElement("p"),glyph=document.createElement("span");glyph.textContent="⌕";title.textContent=q?tr("No profiles match your search."):tr("The network is taking shape. Be among the first to create a profile.");detail.textContent=q?tr("Try another skill, profession or location."):tr("The first professional profiles will appear here as members join.");box.append(glyph,title,detail);el.replaceChildren(box);return;}'+app.slice(emptyEnd);
 }
