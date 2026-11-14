@@ -120,6 +120,32 @@ footer{background:#e8e5dc!important;color:var(--z-ink)!important}
 @media(max-width:1050px){.z-hero-inner{grid-template-columns:1fr;gap:24px}.z-hero-copy{max-width:760px}.z-hero-copy h1{max-width:13ch}.z-hero-visual{min-height:440px}.z-scene-frame{max-width:760px}.z-node-talent{left:0}.z-node-company{right:0}}
 @media(max-width:600px){.z-atlas-hero{min-height:0!important}.z-hero-inner{padding:30px 18px 22px;gap:18px}.z-hero-copy h1{font-size:clamp(37px,11vw,54px)!important}.z-hero-copy>p{font-size:13px}.z-hero-foot{margin-top:26px;font-size:7px;gap:7px}.z-hero-visual{min-height:300px}.z-scene-frame{aspect-ratio:1.04}.z-scene-node{min-width:0;padding:9px 10px}.z-scene-node b{font-size:11px}.z-scene-node span{font-size:8px}.z-node-talent{left:-3px;top:18%}.z-node-company{right:-3px;bottom:13%}.z-scene-label{font-size:6px;left:10px;right:10px}.z-scene-top{top:10px}.z-scene-bottom{bottom:10px}}
 `;
+  css += String.raw`
+/* ZERILYS ATLAS — candidate and company workspace surfaces */
+.modal-card,.modal-content,.dialog-card{background:#fbfaf6!important;color:var(--z-ink)!important;border:1px solid var(--z-line)!important;border-radius:4px!important;box-shadow:0 30px 90px rgba(13,35,36,.2)!important}
+.modal-card h2,.modal-card h3,.modal-content h2,.modal-content h3{color:var(--z-ink)!important;font-family:var(--display)!important;letter-spacing:-.04em!important}
+.modal-card p,.modal-content p{color:#687873!important;line-height:1.65}
+.identity-shell{background:var(--z-bg)!important;color:var(--z-ink)!important;overflow:auto!important}
+.identity-workspace{background:transparent!important;max-width:1480px!important;gap:24px!important;padding:24px!important}
+.identity-universe{position:relative!important;border:1px solid var(--z-line)!important;border-radius:4px!important;background:radial-gradient(circle at 50% 46%,#e8e2d5 0%,#f8f5ed 55%,#e9e5dc 100%)!important;box-shadow:var(--z-shadow)!important}
+.candidate-core{background:var(--z-ink)!important;color:#fffefa!important;border:1px solid rgba(182,110,73,.6)!important;box-shadow:0 18px 48px rgba(18,42,41,.2)!important}
+.candidate-core>b,.candidate-core small,.candidate-core span{color:#fffefa!important}
+.node-intent,.identity-universe [class*=node-]{background:#fffefa!important;color:var(--z-ink)!important;border:1px solid rgba(182,110,73,.45)!important;border-radius:2px!important;box-shadow:0 10px 28px rgba(22,42,40,.09)!important}
+.node-intent b,.identity-universe [class*=node-] b{color:var(--z-ink)!important}
+.visibility-hint{background:#e8e5dc!important;border:1px solid var(--z-line)!important;border-radius:2px!important;color:#52645e!important}
+#editModal .modal-card,#profileModal .modal-card{max-width:min(1120px,96vw)!important}
+#editModal input,#editModal select,#editModal textarea,#profileModal input,#profileModal select,#profileModal textarea{background:#fffefa!important;color:var(--z-ink)!important;border:1px solid rgba(23,43,41,.22)!important;border-radius:2px!important}
+#editModal label,#profileModal label{color:#40554e!important;font-weight:600!important}
+.skill-entry-label,.skill-level-label{color:#40554e!important}
+.skill-add,.company-studio,.company-workspace,.review-console{background:#fbfaf6!important;color:var(--z-ink)!important;border:1px solid var(--z-line)!important;border-radius:4px!important;box-shadow:var(--z-shadow)!important}
+.project-card,.opportunity-card{background:#fffefa!important;color:var(--z-ink)!important;border:1px solid var(--z-line)!important;border-radius:3px!important;box-shadow:none!important}
+.project-card h3,.opportunity-card h3,.project-card strong,.opportunity-card strong{color:var(--z-ink)!important}
+.project-card p,.opportunity-card p,.project-card small,.opportunity-card small{color:#687873!important}
+.search-empty-state{background:#e9e5dc!important;color:var(--z-ink)!important;border:1px dashed rgba(23,43,41,.3)!important;border-radius:3px!important}
+.search-empty-state>b{color:var(--z-ink)!important}.search-empty-state p{color:#687873!important}
+.language-toggle{background:#fffefa!important;color:var(--z-ink)!important;border:1px solid var(--z-line)!important}
+@media(max-width:760px){.identity-workspace{padding:10px!important;gap:12px!important}.identity-universe{border-radius:3px!important}.modal-card,.modal-content{max-width:calc(100vw - 20px)!important}}
+`;
   write("public/styles.css", css);
 
 let html = read("public/index.html");
@@ -196,21 +222,21 @@ if (!app.includes("ZERILYS ATLAS — immersive home architecture")) {
  const heroMarkup = \`
   <div class="z-hero-inner">
    <div class="z-hero-copy">
-    <div class="z-eyebrow"><span></span> THE GLOBAL PROFESSIONAL ATLAS</div>
-    <h1>Le talent n’a pas de frontières.<em>Les bonnes rencontres non plus.</em></h1>
-    <p>ZERILYS révèle les compétences, relie les ambitions et donne naissance aux collaborations qui font avancer les organisations.</p>
+    <div class="z-eyebrow"><i></i><span data-z-fr="ATLAS PROFESSIONNEL MONDIAL" data-z-en="THE GLOBAL PROFESSIONAL ATLAS">ATLAS PROFESSIONNEL MONDIAL</span></div>
+    <h1><span data-z-fr="Le talent n’a pas de frontières." data-z-en="Talent knows no borders.">Le talent n’a pas de frontières.</span><em data-z-fr="Les bonnes rencontres non plus." data-z-en="Neither do the right connections.">Les bonnes rencontres non plus.</em></h1>
+    <p data-z-fr="ZERILYS révèle les compétences, relie les ambitions et donne naissance aux collaborations qui font avancer les organisations." data-z-en="ZERILYS makes skills visible, connects ambitions and brings to life collaborations that move organisations forward.">ZERILYS révèle les compétences, relie les ambitions et donne naissance aux collaborations qui font avancer les organisations.</p>
     <div class="z-hero-actions">
-     <a class="z-cta z-cta-dark" href="#discover">Explorer le réseau <span>↗</span></a>
-     <button class="z-cta z-cta-light" type="button" id="zJoinCta">Créer mon profil <span>↗</span></button>
+     <a class="z-cta z-cta-dark" href="#discover"><span data-z-fr="Explorer le réseau" data-z-en="Explore the network">Explorer le réseau</span> <span>↗</span></a>
+     <button class="z-cta z-cta-light" type="button" id="zJoinCta"><span data-z-fr="Créer mon profil" data-z-en="Create my profile">Créer mon profil</span> <span>↗</span></button>
     </div>
-    <div class="z-hero-foot"><span>COMPÉTENCES ÉTAYÉES</span><i></i><span>OPPORTUNITÉS CIBLÉES</span><i></i><span>PROJETS COLLABORATIFS</span></div>
+    <div class="z-hero-foot"><span data-z-fr="COMPÉTENCES ÉTAYÉES" data-z-en="DEMONSTRATED SKILLS">COMPÉTENCES ÉTAYÉES</span><i></i><span data-z-fr="OPPORTUNITÉS CIBLÉES" data-z-en="TARGETED OPPORTUNITIES">OPPORTUNITÉS CIBLÉES</span><i></i><span data-z-fr="PROJETS COLLABORATIFS" data-z-en="COLLABORATIVE PROJECTS">PROJETS COLLABORATIFS</span></div>
    </div>
    <div class="z-hero-visual">
     <div class="z-scene-label z-scene-top"><span>01 / GLOBAL CONNECTIONS</span><b>WORLDWIDE</b></div>
     <div class="z-scene-frame">\${scene}</div>
     <div class="z-scene-label z-scene-bottom"><span>PEOPLE · SKILLS · PURPOSE</span><b>ZERILYS / 2026</b></div>
-    <div class="z-scene-node z-node-talent"><small>01 / TALENT</small><b>Compétences</b><span>Identité · Preuves · Parcours</span></div>
-    <div class="z-scene-node z-node-company"><small>02 / ORGANISATION</small><b>Entreprises</b><span>Recrutement · Missions · Projets</span></div>
+    <div class="z-scene-node z-node-talent"><small>01 / TALENT</small><b data-z-fr="Compétences" data-z-en="Capabilities">Compétences</b><span data-z-fr="Identité · Preuves · Parcours" data-z-en="Identity · Evidence · Trajectory">Identité · Preuves · Parcours</span></div>
+    <div class="z-scene-node z-node-company"><small>02 / ORGANISATION</small><b data-z-fr="Entreprises" data-z-en="Organisations">Entreprises</b><span data-z-fr="Recrutement · Missions · Projets" data-z-en="Recruitment · Missions · Projects">Recrutement · Missions · Projets</span></div>
    </div>
   </div>
  \`;
@@ -220,9 +246,12 @@ if (!app.includes("ZERILYS ATLAS — immersive home architecture")) {
    hero.dataset.zAtlasBuilt = "1";
    hero.classList.add("z-atlas-hero");
    hero.innerHTML = heroMarkup;
+   const applyAtlasLocale = () => { const language = window.ZERIHLINK_I18N?.language === "en" ? "en" : "fr"; hero.querySelectorAll("[data-z-fr][data-z-en]").forEach(el => { el.textContent = el.getAttribute("data-z-" + language); }); };
+   applyAtlasLocale();
+   document.addEventListener("zerihlink:languagechange", applyAtlasLocale);
    const join = document.getElementById("zJoinCta");
    if (join) join.addEventListener("click", () => {
-    const existing = document.querySelector("#pricingJoin,#authOpen,#loginBtn,[data-action='register']");
+    const existing = document.querySelector("#joinOpen,#pricingJoin,#authOpen,#loginBtn,[data-action='register']");
     if (existing) existing.click();
     else {
      const links = [...document.querySelectorAll("button,a")];
