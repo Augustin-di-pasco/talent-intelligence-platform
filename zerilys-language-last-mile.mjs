@@ -108,6 +108,14 @@ for(const term of ["zerilys:languagechange","/api/me/language","toLocaleDateStri
  const i=appSource.indexOf(term);
  if(i>=0)console.log("ZERILYS_LANGUAGE_RUNTIME_"+term.replace(/[^a-z]/gi,"_"),appSource.slice(Math.max(0,i-250),Math.min(appSource.length,i+650)));
 }
+for(const term of ["async function api","function api(","const api=","fetch(url","fetch(path","window.fetch","New candidate interest","Application status updated"]){
+ const i=appSource.indexOf(term);
+ if(i>=0)console.log("ZERILYS_APP_LANGUAGE_CONTEXT_"+term.replace(/[^a-z]/gi,"_"),appSource.slice(Math.max(0,i-220),Math.min(appSource.length,i+520)));
+}
+for(const term of ["preferredLanguage","/api/me","/api/profile","/api/user","language:"]){
+ const i=server.indexOf(term);
+ if(i>=0)console.log("ZERILYS_SERVER_LANGUAGE_CONTEXT_"+term.replace(/[^a-z]/gi,"_"),server.slice(Math.max(0,i-220),Math.min(server.length,i+520)));
+}
 const langRoute=server.indexOf("/api/me/language");
 if(langRoute>=0)console.log("ZERILYS_LANGUAGE_SERVER_ROUTE",server.slice(Math.max(0,langRoute-250),Math.min(server.length,langRoute+700)));
 
