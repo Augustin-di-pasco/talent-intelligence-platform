@@ -7,7 +7,7 @@ const write = (name, value) => fs.writeFileSync(path.join(root, name), value);
 
 let css = read("public/styles.css");
 if (!css.includes("ZERILYS — ATLAS ART DIRECTION 2026")) {
-  css += String.raw\`
+  css += String.raw`
 
 /* ZERILYS — ATLAS ART DIRECTION 2026 */
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
@@ -100,17 +100,17 @@ footer{background:#e8e5dc!important;color:var(--z-ink)!important}
  body>main>.signal-strip>div{border-right:0!important;border-bottom:1px solid var(--z-line)!important}
  .pricing-grid{grid-template-columns:1fr!important}
 }
-\`;
+`;
   write("public/styles.css", css);
 }
 
 let app = read("public/app.js");
 if (!app.includes("ZERILYS ATLAS — immersive home architecture")) {
-  app += String.raw\`
+  app += String.raw`
 
 /* ZERILYS ATLAS — immersive home architecture */
 (() => {
- const scene = \`
+ const scene = `
  <svg class="z-atlas-art" viewBox="0 0 1000 720" role="img" aria-label="Atlas architectural mondial reliant talents et organisations" xmlns="http://www.w3.org/2000/svg">
   <defs>
    <linearGradient id="zOcean" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#294c61"/><stop offset=".55" stop-color="#172f40"/><stop offset="1" stop-color="#0d202d"/></linearGradient>
@@ -168,8 +168,8 @@ if (!app.includes("ZERILYS ATLAS — immersive home architecture")) {
   </g>
   <g fill="url(#zGlow)"><circle cx="290" cy="466" r="55"/><circle cx="795" cy="445" r="60"/><circle cx="430" cy="180" r="45"/></g>
   <path d="M90 640Q340 600 560 625T960 620" fill="none" stroke="#b66e49" stroke-opacity=".38" stroke-width="1.5"/>
- </svg>\`;
- const heroMarkup = \`
+ </svg>`;
+ const heroMarkup = `
   <div class="z-hero-inner">
    <div class="z-hero-copy">
     <div class="z-eyebrow"><span></span> THE GLOBAL PROFESSIONAL ATLAS</div>
@@ -183,13 +183,13 @@ if (!app.includes("ZERILYS ATLAS — immersive home architecture")) {
    </div>
    <div class="z-hero-visual">
     <div class="z-scene-label z-scene-top"><span>01 / GLOBAL CONNECTIONS</span><b>WORLDWIDE</b></div>
-    <div class="z-scene-frame">\${scene}</div>
+    <div class="z-scene-frame">${scene}</div>
     <div class="z-scene-label z-scene-bottom"><span>PEOPLE · SKILLS · PURPOSE</span><b>ZERILYS / 2026</b></div>
     <div class="z-scene-node z-node-talent"><small>01 / TALENT</small><b>Compétences</b><span>Identité · Preuves · Parcours</span></div>
     <div class="z-scene-node z-node-company"><small>02 / ORGANISATION</small><b>Entreprises</b><span>Recrutement · Missions · Projets</span></div>
    </div>
   </div>
- \`;
+ `;
  const run = () => {
   const hero = document.querySelector("body>main>.candidate-hero,.candidate-hero");
   if (hero && !hero.dataset.zAtlasBuilt) {
@@ -220,7 +220,7 @@ if (!app.includes("ZERILYS ATLAS — immersive home architecture")) {
  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded",run,{once:true});
  else run();
 })();
-\`;
+`;
   write("public/app.js", app);
 }
 console.log("ZERILYS new atlas art direction installed.");
