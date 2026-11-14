@@ -7,7 +7,8 @@ test("the three Stripe plans and six monthly or annual checkout choices remain i
  for(const plan of ["solo","team","business"])assert.ok(html.includes('data-billing-plan="'+plan+'"'),"Missing plan selector: "+plan);
  for(const price of ["solo_monthly","solo_annual","team_monthly","team_annual","business_monthly","business_annual"])assert.ok(html.includes('data-billing-price="'+price+'"'),"Missing checkout choice: "+price);
  assert.ok(html.includes('id="billingManage"'));
- assert.equal((html.match(/class="billing-options hidden"/g)||[]).length,3,"Prices must stay hidden until a plan is selected");
+ assert.equal((html.match(/class="billing-options"/g)||[]).length,3,"All three price panels must be permanently visible");
+ assert.ok(!html.includes("Choisissez votre formule. Les tarifs s’affichent après sélection."));
  assert.ok(i18n.includes('"Entreprise":"Enterprise"'),"The top plan must be named Enterprise in English");
  assert.equal((html.match(/class="pricing-card/g)||[]).length,3,"The Stripe pricing section must contain exactly three company plans");
 });
