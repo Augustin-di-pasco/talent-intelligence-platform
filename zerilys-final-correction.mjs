@@ -154,4 +154,99 @@ for (const page of ["public/index.html","public/legal-notice.html","public/beta-
  }
  write("public/styles.css",actionCss);
 
+
+ // ZERILYS talent search interaction repair
+ let searchApp = read("public/app.js");
+ if (!searchApp.includes("ZERILYS talent search interaction repair")) {
+   searchApp += String.raw`
+/* ZERILYS talent search interaction repair */
+(() => {
+  const norm = value => (value || "").replace(/\\s+/g," ").trim().toLocaleLowerCase("fr");
+  const isSearchLabel = el => /^(rechercher|recherche|search|lancer la recherche|voir les profils)$/i.test(norm(el.textContent));
+  const findSearchZone = node => {
+    let current = node;
+    while (current && current !== document.body) {
+      const text = norm(current.textContent);
+      if ((text.includes("recherche de talents") || text.includes("talent search") || current.matches("#talentSearch,#profileSearch,.talent-search,.profile-search,[data-search-zone]"))
+          && current.querySelector('input[type="search"],input[placeholder*="recher" i],input[placeholder*="search" i],input[name*="search" i],input[name*="query" i]')) return current;
+      current = current.parentElement;
+    }
+    return document.querySelector("#talentSearch,#profileSearch,.talent-search,.profile-search,[data-search-zone]") || null;
+  };
+  const getInput = zone => zone && zone.querySelector('input[type="search"],input[placeholder*="recher" i],input[placeholder*="search" i],input[name*="search" i],input[name*="query" i],input[type="text"]');
+  const getForm = (zone,input) => (input && input.form) || (zone && zone.querySelector("form"));
+  const submitSearch = (zone,input,sourceButton) => {
+    if (!zone || !input) return false;
+    const form = getForm(zone,input);
+    input.dispatchEvent(new Event("input",{bubbles:true}));
+    input.dispatchEvent(new Event("change",{bubbles:true}));
+    if (form && typeof form.requestSubmit === "function") {
+      const submitter = sourceButton && sourceButton.form === form && sourceButton.type === "submit" ? sourceButton : undefined;
+      form.requestSubmit(submitter);
+      return true;
+    }
+    const button = sourceButton || [...zone.querySelectorAll("button,[role=button],input[type=submit]")].find(isSearchLabel);
+    if (button && button !== sourceButton) { button.click(); return true; }
+    return false;
+  };
+  const bind = () => {
+    const zones = new Set();
+    document.querySelectorAll('input[type="search"],input[placeholder*="recher" i],input[placeholder*="search" i],input[name*="search" i],input[name*="query" i]').forEach(input => {
+      const zone = findSearchZone(input);
+      if (zone) zones.add(zone);
+    });
+    zones.forEach(zone => {
+      if (zone.dataset.zerilysSearchRepair) return;
+      zone.dataset.zerilysSearchRepair = "1";
+      zone.addEventListener("click", event => {
+        const clicked = event.target.closest("button,a,[role=button],[role=option],.chip,.tag,[class*=suggest],[class*=keyword],[data-query]");
+        if (!clicked || !zone.contains(clicked)) return;
+        const input = getInput(zone);
+        if (!input) return;
+        if (isSearchLabel(clicked)) {
+          if (clicked.type !== "submit") {
+            const form = getForm(zone,input);
+            if (form && form.requestSubmit) {
+              event.preventDefault();
+              form.requestSubmit();
+            }
+          }
+          return;
+        }
+        const text = (clicked.getAttribute("data-query") || clicked.getAttribute("data-value") || clicked.textContent || "").trim();
+        if (!text || text.length > 100 || clicked.matches("a[href^='#'],[role=tab]")) return;
+        const cls = norm(clicked.className && String(clicked.className));
+        const isSuggestion = clicked.matches("[role=option],.chip,.tag,[class*=suggest],[class*=keyword],[data-query],[data-value]")
+          || (clicked.parentElement && clicked.parentElement.matches("ul,ol,[class*=suggest],[class*=keyword],[class*=popular],[class*=title]"));
+        if (!isSuggestion) return;
+        event.preventDefault();
+        input.value = text;
+        submitSearch(zone,input);
+      }, true);
+      zone.addEventListener("keydown", event => {
+        if (event.key !== "Enter") return;
+        const input = event.target.closest("input");
+        if (!input || !zone.contains(input)) return;
+        const form = getForm(zone,input);
+        if (form && form.requestSubmit) {
+          event.preventDefault();
+          form.requestSubmit();
+        }
+      }, true);
+      zone.querySelectorAll("button,a,[role=button],[role=option],.chip,.tag,[class*=suggest],[class*=keyword],[data-query]").forEach(el => {
+        if (!isSearchLabel(el) && norm(el.textContent).length < 100) {
+          el.style.cursor = "pointer";
+          if (!el.hasAttribute("tabindex") && !el.matches("button,a,input")) el.setAttribute("tabindex","0");
+        }
+      });
+    });
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded",bind,{once:true});
+  else bind();
+  new MutationObserver(bind).observe(document.documentElement,{childList:true,subtree:true});
+})();
+`;
+ }
+ write("public/app.js",searchApp);
+
 console.log("ZERILYS final premium correction layer applied.");
