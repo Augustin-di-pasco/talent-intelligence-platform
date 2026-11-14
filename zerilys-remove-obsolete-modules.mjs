@@ -9,7 +9,7 @@ if (!app.includes("ZERILYS remove obsolete profile modules")) {
   app += String.raw`
 /* ZERILYS remove obsolete profile modules */
 (() => {
-  const normalize = value => (value || "").replace(/\\s+/g, " ").trim().toLocaleLowerCase();
+  const normalize = value => (value || "").replace(/\s+/g, " ").trim().toLocaleLowerCase();
   const contains = (node, phrases) => {
     const text = normalize(node?.innerText || node?.textContent);
     return phrases.every(phrase => text.includes(normalize(phrase)));
