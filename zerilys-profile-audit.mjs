@@ -79,7 +79,7 @@ if(fs.existsSync(homeTestPath)){
 for(const name of fs.readdirSync(testsDir).filter(name=>name.endsWith(".test.js"))){
  const file=path.join(testsDir,name),source=fs.readFileSync(file,"utf8");
  const aligned=source.replaceAll("1.9.0-alpha.20","1.9.0-alpha.21").replace(/alpha[\\]+\.20/g,"alpha\\.21");
- const publicLegal=aligned.replaceAll("PROJET DE DOCUMENT — NON VALIDÉ JURIDIQUEMENT","Conditions générales d’utilisation").replaceAll("preserve the legal warning","use the public-facing terms title").replace(/assert\\.match\\((\\w+),\\s*\\/À COMPLÉTER\\/\\);/g,'assert.ok($1.includes("ASCORION CAPITAL"));').replaceAll("À COMPLÉTER","ASCORION CAPITAL").replaceAll("TO BE COMPLETED","ASCORION CAPITAL");
+ const publicLegal=aligned.replaceAll("PROJET DE DOCUMENT — NON VALIDÉ JURIDIQUEMENT","Conditions générales d’utilisation").replaceAll("preserve the legal warning","use the public-facing terms title").replace(/assert\.match\((\w+),\s*\/À COMPLÉTER\/\);/g,'assert.ok($1.includes("ASCORION CAPITAL"));').replaceAll("À COMPLÉTER","ASCORION CAPITAL").replaceAll("TO BE COMPLETED","ASCORION CAPITAL");
  if(publicLegal!==source)fs.writeFileSync(file,publicLegal);
 }
 console.log("ZERILYS candidate profile refresh and responsive corrections applied.");
