@@ -10,14 +10,7 @@ test("candidate profile and editor labels have explicit French-English dictionar
 test("all profile mutations refresh the canonical profile and dependent surfaces",()=>{
  const start=app.indexOf("async function syncProfileSurfaces"),end=app.indexOf("\nfunction selectSignal",start),sync=app.slice(start,end);
  for(const fn of ["renderSkills()","renderTrajectory()","renderQualifications()","renderEvidence()","renderIdentity()","loadReadiness()","loadOpportunityOrbit()","loadCandidateApplications()","loadNetwork()"]) assert.ok(sync.includes(fn),"Profile sync omits "+fn);
- for(const [label,snippet] of [
-  ["skill removal",'me=d.user;await syncProfileSurfaces();selectSignal("capabilities")'],
-  ["evidence submission",'await syncProfileSurfaces();selectSignal("evidence")'],
-  ["trajectory removal",'await syncProfileSurfaces();selectSignal("trajectory");toast("Élément de parcours supprimé.")'],
-  ["experience creation",'$("#trajectoryExperienceDescription").value="";await syncProfileSurfaces();selectSignal("trajectory")'],
-  ["education creation",'$("#trajectoryEducationLevel").value="";await syncProfileSurfaces();selectSignal("trajectory")'],
-  ["qualification submission",'await syncProfileSurfaces();toast("Justificatif transmis. Le badge sera attribué après vérification.")']
- ]) assert.ok(app.includes(snippet),label+" must refresh all profile surfaces");
+ for(const snippet of ['me=d.user;await syncProfileSurfaces();selectSignal("capabilities")','await syncProfileSurfaces();selectSignal("evidence")','await syncProfileSurfaces();selectSignal("trajectory");toast("Élément de parcours supprimé.")','for(const id of ["trajectoryExperienceTitle","trajectoryExperienceCompany","trajectoryExperienceDomain","trajectoryExperienceDescription"])$("#"+id).value="";await syncProfileSurfaces();selectSignal("trajectory")','for(const id of ["trajectoryEducationTitle","trajectoryEducationInstitution","trajectoryEducationField","trajectoryEducationLevel"])$("#"+id).value="";await syncProfileSurfaces();selectSignal("trajectory")','await syncProfileSurfaces();toast("Justificatif transmis. Le badge sera attribué après vérification.")']) assert.ok(app.includes(snippet),"Profile mutation missing canonical refresh: "+snippet);
 });
 test("candidate profile and editor layouts have bounded responsive geometry",()=>{
  assert.ok(css.includes("#editModal .modal-card.wide{width:min(760px,calc(100vw - 32px));max-height:calc(100dvh - 32px)"));
