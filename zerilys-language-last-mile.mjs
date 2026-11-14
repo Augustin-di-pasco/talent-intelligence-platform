@@ -116,6 +116,14 @@ for(const term of ["preferredLanguage","/api/me","/api/profile","/api/user","lan
  const i=server.indexOf(term);
  if(i>=0)console.log("ZERILYS_SERVER_LANGUAGE_CONTEXT_"+term.replace(/[^a-z]/gi,"_"),server.slice(Math.max(0,i-220),Math.min(server.length,i+520)));
 }
+const langPrefIndex=appSource.lastIndexOf("languagePreferenceUserId");
+if(langPrefIndex>=0)console.log("ZERILYS_LANGUAGE_PREFERENCE_LOGIC",appSource.slice(Math.max(0,langPrefIndex-500),Math.min(appSource.length,langPrefIndex+1100)));
+const dateIndex=appSource.lastIndexOf("Intl.DateTimeFormat");
+if(dateIndex>=0)console.log("ZERILYS_DATE_FORMAT_LOGIC",appSource.slice(Math.max(0,dateIndex-180),Math.min(appSource.length,dateIndex+240)));
+const i18nChange=i18nSource.lastIndexOf("languagechange");
+if(i18nChange>=0)console.log("ZERILYS_I18N_CHANGE_LOGIC",i18nSource.slice(Math.max(0,i18nChange-260),Math.min(i18nSource.length,i18nChange+300)));
+const meIndex=server.indexOf('"/api/me"');
+if(meIndex>=0)console.log("ZERILYS_SERVER_ME_ROUTE",server.slice(Math.max(0,meIndex-260),Math.min(server.length,meIndex+850)));
 const langRoute=server.indexOf("/api/me/language");
 if(langRoute>=0)console.log("ZERILYS_LANGUAGE_SERVER_ROUTE",server.slice(Math.max(0,langRoute-250),Math.min(server.length,langRoute+700)));
 
