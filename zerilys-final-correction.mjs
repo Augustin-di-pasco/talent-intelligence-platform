@@ -68,7 +68,7 @@ if (!app.includes("ZERILYS final premium corrections — deterministic")) {
   const run = () => {
     // Remove only the redundant four-step index strip, not the candidate hero or its orbital rings.
     const labels = ["01 PROFIL","02 RÉALISATIONS","03 OPPORTUNITÉS","04 PROJETS"];
-    const normalize = value => (value || "").replace(/\\s+/g," ").trim().toLocaleUpperCase("fr");
+    const normalize = value => (value || "").replace(/\s+/g," ").trim().toLocaleUpperCase("fr");
     const candidates = [...document.querySelectorAll("body *")].filter(el => {
       if (el === document.body || el.tagName === "MAIN" || el.children.length > 6) return false;
       const value = normalize(el.textContent);
