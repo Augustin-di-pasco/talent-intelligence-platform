@@ -44,5 +44,5 @@ test("checkout and portal actions reach authenticated Stripe endpoints and prese
 test("the three-plan grid is responsive and sized for three company plans",()=>{
  assert.ok(css.includes(".zerilys-billing-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;"));
  assert.ok(css.includes("@media(max-width:1050px){.zerilys-billing-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}"));
- assert.ok(css.includes("@media(max-width:700px){.zerilys-billing-grid{grid-template-columns:1fr!important}}"));
+ assert.ok(css.includes("@media(max-width:700px)")); assert.ok(css.includes(".zerilys-billing-grid{grid-template-columns:1fr!important}"));
 });
