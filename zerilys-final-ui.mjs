@@ -138,3 +138,54 @@ const apiHelper = 'async function api(path,options={}){const r=await fetch("/api
 const apiHelperFixed = 'async function api(path,options={}){const send=()=>fetch("/api"+path,{...options,headers:{"Content-Type":"application/json",...(options.method&&options.method!=="GET"?{"X-CSRF-Token":csrfToken}:{}),...(options.headers||{})}});let r=await send(),data=await r.json().catch(()=>({}));if(!r.ok&&data.error==="CSRF_INVALID"&&options.method&&options.method!=="GET"){const cfg=await fetch("/api/config",{cache:"no-store"}).then(x=>x.json());appConfig={...appConfig,...cfg};csrfToken=cfg.csrfToken||"";r=await send();data=await r.json().catch(()=>({}));}if(!r.ok)throw new Error(window.ZERIHLINK_I18N?.translate(data.message||data.error||"Something went wrong")||data.message||data.error||"Something went wrong");return data}';
 if (csrfRecoveryApp.includes(apiHelper)) csrfRecoveryApp = csrfRecoveryApp.replace(apiHelper, apiHelperFixed);
 write("public/app.js",csrfRecoveryApp);
+
+
+// ZERILYS employer offer: French copy and approved pricing
+let employerHtml = read("public/index.html");
+const employerReplacements = [
+  ["SPECIALIST RECRUITMENT · EMPLOYER OFFER","RECRUTEMENT SPÉCIALISÉ · OFFRES ENTREPRISES"],
+  ["Recruit differently.","Recrutez autrement."],
+  ["A workspace to identify rare expertise, understand demonstrated capabilities and manage conversations with talent.","Un espace pour repérer les expertises rares, comprendre les compétences démontrées et échanger avec les talents."],
+  ["CANDIDATE","CANDIDAT"],
+  ["RECRUITER","RECRUTEUR"],
+  ["Professional identity","Identité professionnelle"],
+  ["Evolving professional profile","Profil professionnel évolutif"],
+  ["Skills and evidence","Compétences et réalisations"],
+  ["Discovery and opportunities","Découverte et opportunités"],
+  ["Proposed candidate access","Accès candidat gratuit"],
+  ["Specialist talent search","Recherche de talents spécialisés"],
+  ["Profiles, skills and evidence","Profils, compétences et réalisations"],
+  ["Opportunity publishing and tracking","Publication et suivi des opportunités"],
+  ["Application pipeline management","Suivi des candidatures"],
+  ["Shared recruitment workspace","Espace de recrutement partagé"],
+  ["Recruiter and viewer roles","Rôles recruteur et lecteur"],
+  ["Opportunity coordination","Coordination des opportunités"],
+  ["Dedicated deployment and support","Déploiement et accompagnement dédiés"],
+  ["Configuration according to needs","Paramétrage selon vos besoins"],
+  ["Specific terms and support","Conditions et accompagnement spécifiques"],
+  ["Case-by-case study","Étude personnalisée"],
+  ["Tarif à définir","39 € HT / mois"],
+  ["Offre pilote","Offre Solo"],
+  ["Offre équipe","Offre Team"],
+  ["Tarif à définir avec les partenaires pilotes","Tarif partenaire bêta : 29 € HT / mois pendant 12 mois"]
+];
+for (const [before, after] of employerReplacements) employerHtml = employerHtml.replaceAll(before, after);
+employerHtml = employerHtml.replace("39 € HT / mois","39 € HT / mois · 390 € HT / an");
+employerHtml = employerHtml.replace("Offre équipe","Offre Team");
+employerHtml = employerHtml.replace("89 € HT / mois","89 € HT / mois · 890 € HT / an");
+employerHtml = employerHtml.replace("179 € HT / mois","179 € HT / mois · 1 790 € HT / an");
+employerHtml = employerHtml.replace("29 € HT / mois pendant 12 mois","29 € HT / mois pendant 12 mois");
+employerHtml = employerHtml.replace("Tarif partenaire bêta : 29 € HT / mois pendant 12 mois","Tarif partenaire bêta : Solo 29 € · Team 69 € · Business 139 € HT / mois, prix bloqués 12 mois");
+employerHtml = employerHtml.replace("Tarif à définir","Tarif sur devis");
+employerHtml = employerHtml.replace("Sur mesure","Sur mesure · sur devis");
+if (!employerHtml.includes("Business : 179 € HT / mois")) {
+  employerHtml = employerHtml.replace("</section>", '<p class="employer-pricing-note"><strong>Offre Business :</strong> 179 € HT / mois ou 1 790 € HT / an. <strong>Tarifs partenaires bêta :</strong> Solo 29 €, Team 69 €, Business 139 € HT / mois, bloqués pendant 12 mois. <strong>Entreprise :</strong> sur devis.</p></section>');
+}
+write("public/index.html", employerHtml);
+let employerCss = read("public/styles.css");
+if (!employerCss.includes("ZERILYS employer pricing clarity")) employerCss += `
+/* ZERILYS employer pricing clarity */
+.employer-pricing-note{max-width:1180px;margin:22px auto 0;padding:15px 18px;border-top:1px solid rgba(164,190,211,.16);color:#aab9c9;font-size:12px;line-height:1.8}
+.employer-pricing-note strong{color:#e9f0f7;font-weight:650}
+`;
+write("public/styles.css", employerCss);
