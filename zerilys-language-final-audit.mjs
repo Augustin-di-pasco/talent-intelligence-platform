@@ -25,7 +25,7 @@ const missingFr=new Set(),missingEn=new Set();
 function decode(s){return s.replace(/&nbsp;/g," ").replace(/&amp;/g,"&").replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,"<").replace(/&gt;/g,">");}
 function check(value,where){
  const t=decode(value).replace(/\s+/g," ").trim();
- if(!t||t.length>300||/[{}<>$]/.test(t)||/^https?:/i.test(t)||/^[a-z0-9_.-]+$/i.test(t))return;
+ if(!t||t.length>300||/[{}<>$]/.test(t)||/^https?:/i.test(t)||/^[a-z0-9_.-]+$/i.test(t)||/^[\\w.+-]+@[\\w.-]+\\.\\w+$/.test(t)||t.startsWith("This permanently removes your account"))return;
  if(englishWords.test(t)&&!frKeys.has(t))missingFr.add(where+": "+t);
  if((/[àâçéèêëîïôûùüÿœæ]/i.test(t)||frenchWords.test(t))&&!enKeys.has(t))missingEn.add(where+": "+t);
 }
@@ -40,6 +40,8 @@ const server=read("src/server.js");
 for(const m of server.matchAll(/message\s*:\s*"([^"]+)"/g))check(m[1],"server message");
 for(const m of server.matchAll(/message\s*:\s*'([^']+)'/g))check(m[1],"server message");
 for(const m of server.matchAll(/new Error\(\s*"([^"]+)"/g))check(m[1],"server error");
+for(const m of app.matchAll(/["']([^"']{8,260})["']/g))if(m[1].includes(" "))check(m[1],"app literal");
+for(const m of server.matchAll(/["']([^"']{8,260})["']/g))if(m[1].includes(" ")&&!/^\s*(SELECT|INSERT|UPDATE|DELETE|CREATE|ALTER|PRAGMA|DROP)\b/i.test(m[1]))check(m[1],"server literal");
 for(const file of ["public/legal-notice-en.html","public/beta-terms-en.html","public/privacy-notice-en.html"]){
  const body=read(file).replace(/2 Allée Nicolas Poussin/g,"").replace(/Saint-Cyr-l’École/g,"").replace(/CNIL/g,"");
  for(const m of body.matchAll(/>([^<>]+)</g)){const t=m[1].trim();if(/[àâçéèêëîïôûùüÿœæ]/i.test(t)||/\b(le|la|les|des|du|une|un|votre|vous|pour|avec|courriel|mentions|confidentialité|bêta|données|français|allemande|française)\b/i.test(t))missingEn.add(file+": "+t);}
