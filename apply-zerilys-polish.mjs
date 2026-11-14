@@ -341,6 +341,7 @@ await import("./zerilys-language-overhaul.mjs");
 await import("./zerilys-language-fixes.mjs");
 await import("./zerilys-language-microcopy.mjs");
 await import("./zerilys-language-last-mile.mjs");
+await import("./zerilys-remove-obsolete-modules.mjs");
 // The final language audit runs separately from the production build to keep
 // build output concise and prevent diagnostic-only checks from blocking deployment.
 
