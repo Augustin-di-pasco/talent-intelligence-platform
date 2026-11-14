@@ -58,13 +58,9 @@ if (premiumApp.includes(authMinLength)) premiumApp = premiumApp.replace(authMinL
 write("public/app.js", premiumApp);
 
 let premiumCss = read("public/styles.css");
-if (!premiumCss.includes("ZERILYS premium editorial interface")) {
-premiumCss += `
-/* ZERILYS premium refinement — sections below the original hero only */
-let premiumCss = read("public/styles.css");
 if (!premiumCss.includes("ZERILYS refined lower-page layout")) {
 premiumCss += `
-/* ZERILYS refined lower-page layout */
+/* ZERILYS refined lower-page layout — original hero untouched */
 body>main{
   display:grid;grid-template-columns:repeat(12,minmax(0,1fr));
   column-gap:22px;row-gap:20px;max-width:1500px;margin:0 auto;
@@ -109,9 +105,7 @@ body>main>#discover,body>main>#global-pulse,body>main>#for-recruiters{
   border-radius:0;background:transparent;box-shadow:none;
 }
 body>main>.section .section-head{gap:32px;margin-bottom:28px}
-body>main>.section .section-head h2{
-  font-size:clamp(30px,3vw,44px);line-height:1.08;letter-spacing:-.045em
-}
+body>main>.section .section-head h2{font-size:clamp(30px,3vw,44px);line-height:1.08;letter-spacing:-.045em}
 body>main>.section .section-head p{max-width:410px;font-size:13px;line-height:1.8;color:#a3b0bf}
 body>main>.trust-section{
   margin:20px 0 10px;padding:clamp(32px,4vw,54px);
@@ -123,22 +117,19 @@ body>main>.closing{padding:42px 10px 68px}
 .btn{box-shadow:none}
 .btn.primary{background:linear-gradient(110deg,#a8d9d1,#b8c8e7);color:#101a27;border:0}
 .btn.primary:hover{filter:brightness(1.06);transform:translateY(-1px)}
-@media(max-width:1050px){
-  body>main{display:block;padding:0 24px}
-  body>main>#projects,body>main>#opportunities{margin:16px 0}
-}
+@media(max-width:1050px){body>main{display:block;padding:0 24px}body>main>#projects,body>main>#opportunities{margin:16px 0}}
 @media(max-width:640px){
-  body>main{padding:0 16px}
-  body>main>#projects,body>main>#opportunities{padding:23px 17px}
-  body>main>#projects .project-layout{grid-template-columns:1fr}
-  body>main>.section .section-head{display:block}
-  body>main>.section .section-head p{margin-top:16px}
-  body>main>.signal-strip{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));row-gap:8px}
-  body>main>.signal-strip>div{padding:10px 12px}
+ body>main{padding:0 16px}
+ body>main>#projects,body>main>#opportunities{padding:23px 17px}
+ body>main>#projects .project-layout{grid-template-columns:1fr}
+ body>main>.section .section-head{display:block}
+ body>main>.section .section-head p{margin-top:16px}
+ body>main>.signal-strip{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));row-gap:8px}
+ body>main>.signal-strip>div{padding:10px 12px}
 }
 `;
 }
-write("public/styles.css",premiumCss);
+
 
 
 /* ZERILYS CSRF recovery on sign-in */
