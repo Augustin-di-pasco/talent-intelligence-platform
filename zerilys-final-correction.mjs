@@ -131,4 +131,27 @@ for (const page of ["public/index.html","public/legal-notice.html","public/beta-
     fs.writeFileSync(full, document);
   }
 }
+
+ // ZERILYS plan cards — guaranteed actions
+ let actionApp = read("public/app.js");
+ if (!actionApp.includes("ZERILYS plan cards — guaranteed actions")) {
+   actionApp += [
+     '/* ZERILYS plan cards — guaranteed actions */',
+     '(() => {',
+     ' const plans=[{key:"candidate",subject:"Accès candidat gratuit ZERILYS",label:"Accéder gratuitement"},{key:"solo",subject:"Demande d’information — Offre Solo ZERILYS",label:"Demander cette formule"},{key:"team",subject:"Demande d’information — Offre Team ZERILYS",label:"Demander cette formule"},{key:"enterprise",subject:"Demande d’information — Offre Entreprise ZERILYS",label:"Échanger avec l’équipe"}];',
+     ' const bind=()=>{',
+     '  document.querySelectorAll(".pricing-card").forEach((card,index)=>{const plan=plans[index];if(!plan||card.querySelector(".zerilys-plan-action"))return;const link=document.createElement("a");link.className="btn primary zerilys-plan-action";link.href="mailto:zerilys@gmail.com?subject="+encodeURIComponent(plan.subject)+"&body="+encodeURIComponent("Bonjour l’équipe ZERILYS,\\n\\nJe souhaite obtenir des informations concernant : "+plan.subject+".\\n\\nMerci.");link.textContent=plan.label+" ↗";link.setAttribute("aria-label",plan.label+" — "+plan.subject);link.dataset.plan=plan.key;card.appendChild(link);card.dataset.plan=plan.key;card.style.cursor="pointer";card.setAttribute("tabindex","0");card.setAttribute("role","group");card.addEventListener("click",event=>{if(event.target.closest("a,button"))return;link.click();});card.addEventListener("keydown",event=>{if((event.key==="Enter"||event.key===" ")&&event.target===card){event.preventDefault();link.click();}});});',
+     '  const join=document.querySelector("#pricingJoin");if(join&&!join.dataset.zerilysActionBound){join.dataset.zerilysActionBound="1";join.addEventListener("click",()=>{window.location.href="mailto:zerilys@gmail.com?subject="+encodeURIComponent("Créer un compte entreprise ZERILYS");});}',
+     ' };',
+     ' if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();',
+     '})();'
+   ].join("\\n")+"\\n";
+ }
+ write("public/app.js",actionApp);
+ let actionCss=read("public/styles.css");
+ if(!actionCss.includes("ZERILYS plan action affordance")){
+   actionCss+="\\n/* ZERILYS plan action affordance */\\n.pricing-card{cursor:pointer}\\n.pricing-card:focus-visible{outline:2px solid rgba(103,228,223,.85);outline-offset:4px}\\n.pricing-card .zerilys-plan-action{display:inline-flex!important;align-items:center;justify-content:center;align-self:flex-start;margin-top:16px;padding:11px 15px;min-height:42px;border-radius:8px;text-decoration:none;font-size:11px;font-weight:700;white-space:normal}\\n.pricing-card .zerilys-plan-action:hover{filter:brightness(1.12);transform:translateY(-1px)}\\n.pricing-card .zerilys-plan-action:focus-visible{outline:2px solid #8de7df;outline-offset:3px}\\n@media(max-width:560px){.pricing-card .zerilys-plan-action{width:100%;justify-content:center}}\\n";
+ }
+ write("public/styles.css",actionCss);
+
 console.log("ZERILYS final premium correction layer applied.");
