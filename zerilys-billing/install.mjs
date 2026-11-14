@@ -48,7 +48,7 @@ const pricingTest=[
 "import fs from 'node:fs';",
 "const read=n=>fs.readFileSync(new URL('../'+n,import.meta.url),'utf8');",
 "test('approved subscription prices are shown only after selecting one of the three plans',()=>{const html=read('public/index.html');for(const x of ['data-billing-plan=\\\"solo\\\"','data-billing-plan=\\\"team\\\"','data-billing-plan=\\\"business\\\"','39 € HT / mois','390 € HT / an','89 € HT / mois','890 € HT / an','179 € HT / mois','1 790 € HT / an','L’accès candidat reste gratuit'])assert.ok(html.includes(x),x);});",
-"test('billing UI calls the authenticated server checkout and portal',()=>{const app=read('public/app.js');assert.match(app,/billing\\\\/checkout/);assert.match(app,/billing\\\\/portal/);});",
+"test('billing UI calls the authenticated server checkout and portal',()=>{const app=read('public/app.js');assert.ok(app.includes('/billing/checkout'));assert.ok(app.includes('/billing/portal'));});",
 "test('no alternative beta price grid is exposed',()=>{assert.doesNotMatch(read('public/index.html'),/119 €|349 €|29 €|69 €|139 €/);});"
 ].join("\n");
 write("test/employer-offer-packaging-1.3.test.js",pricingTest);
