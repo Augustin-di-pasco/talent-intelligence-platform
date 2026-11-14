@@ -2,11 +2,13 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 const read=n=>fs.readFileSync(new URL("../"+n,import.meta.url),"utf8");
-const html=read("public/index.html"),app=read("public/app.js"),css=read("public/styles.css"),billing=read("src/billing.js"),server=read("src/server.js");
+const html=read("public/index.html"),app=read("public/app.js"),css=read("public/styles.css"),billing=read("src/billing.js"),server=read("src/server.js"),i18n=read("public/i18n.js");
 test("the three Stripe plans and six monthly or annual checkout choices remain in the page",()=>{
  for(const plan of ["solo","team","business"])assert.ok(html.includes('data-billing-plan="'+plan+'"'),"Missing plan selector: "+plan);
  for(const price of ["solo_monthly","solo_annual","team_monthly","team_annual","business_monthly","business_annual"])assert.ok(html.includes('data-billing-price="'+price+'"'),"Missing checkout choice: "+price);
  assert.ok(html.includes('id="billingManage"'));
+ assert.equal((html.match(/class="billing-options hidden"/g)||[]).length,3,"Prices must stay hidden until a plan is selected");
+ assert.ok(i18n.includes('"Entreprise":"Enterprise"'),"The top plan must be named Enterprise in English");
  assert.equal((html.match(/class="pricing-card/g)||[]).length,3,"The Stripe pricing section must contain exactly three company plans");
 });
 test("legacy visual scripts cannot replace Stripe checkout cards with static or mailto actions",()=>{
