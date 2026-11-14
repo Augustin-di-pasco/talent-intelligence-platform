@@ -151,5 +151,122 @@ input,select,textarea{accent-color:var(--z-cyan)}
  #global-pulse button{transition:none}
 }
 `;
+
+css += String.raw\`
+/* ZERILYS FUTURE SYSTEM — FULL PAGE PASS */
+:root{
+ --z-bg:#050c16;--z-surface:rgba(12,24,38,.82);--z-edge:rgba(122,194,211,.20);
+ --z-aqua:#75e6dc;--z-electric:#6caeff;--z-copy:#eef6fb;--z-dim:#9db2c5;
+ --z-shadow:0 22px 70px rgba(0,0,0,.24),inset 0 1px rgba(255,255,255,.045);
+}
+body{
+ color:var(--z-copy);
+ background:
+ radial-gradient(ellipse at 50% -18%,rgba(48,122,161,.22),transparent 42%),
+ radial-gradient(ellipse at 3% 42%,rgba(23,110,123,.12),transparent 30%),
+ radial-gradient(ellipse at 97% 78%,rgba(42,76,153,.12),transparent 33%),
+ #050c16!important;
+}
+body:before{
+ content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.14;
+ background-image:linear-gradient(rgba(130,190,205,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(130,190,205,.08) 1px,transparent 1px);
+ background-size:56px 56px;
+ mask-image:linear-gradient(to bottom,black,transparent 78%);
+}
+header,body>nav,body>header,.site-header,.main-header,.topbar,.navbar{
+ background:rgba(5,13,23,.78)!important;backdrop-filter:blur(22px) saturate(145%);
+ border-bottom:1px solid rgba(126,193,210,.15)!important;
+ box-shadow:0 10px 38px rgba(0,0,0,.15)!important;
+}
+header a,body>nav a,.site-header a,.main-header a,.topbar a,.navbar a{
+ transition:color .2s ease,text-shadow .2s ease;
+}
+header a:hover,body>nav a:hover,.site-header a:hover,.main-header a:hover,.topbar a:hover,.navbar a:hover{
+ color:var(--z-aqua)!important;text-shadow:0 0 16px rgba(117,230,220,.24);
+}
+main{position:relative;isolation:isolate}
+main>section,main>.section,main>[class*="section"]{
+ scroll-margin-top:90px;
+}
+main>section:not(.pricing-section):not(#hero):not(.hero):not(.candidate-stage),
+main>.section:not(.pricing-section){
+ border-color:var(--z-edge);
+}
+.hero,.hero-section,#hero,.home-hero,.candidate-stage,.candidate-hero{
+ position:relative;isolation:isolate;
+}
+.hero:after,.hero-section:after,#hero:after,.home-hero:after,.candidate-stage:after{
+ content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+ background:radial-gradient(ellipse at 50% 48%,rgba(57,147,169,.13),transparent 56%);
+}
+.hero h1,.hero-section h1,#hero h1,.home-hero h1,.candidate-stage h1{
+ color:#f2f8fc;text-wrap:balance;letter-spacing:-.055em;
+ text-shadow:0 8px 42px rgba(65,170,185,.12);
+}
+.hero p,.hero-section p,#hero p,.home-hero p,.candidate-stage p{
+ color:#b1c4d4;line-height:1.7;
+}
+.hero .btn-primary,.hero-section .btn-primary,#hero .btn-primary,
+.home-hero .btn-primary,.candidate-stage .btn-primary,
+button.primary,.btn.primary,.btn-primary{
+ border:1px solid rgba(117,230,220,.52)!important;
+ background:linear-gradient(110deg,#1a7d83,#2762a0)!important;
+ color:#f5ffff!important;box-shadow:0 8px 28px rgba(38,154,164,.20),inset 0 1px rgba(255,255,255,.14)!important;
+}
+.btn-secondary,.btn.outline,button.outline{
+ border:1px solid rgba(130,183,205,.30)!important;
+ background:rgba(15,30,46,.72)!important;color:#d9eaf3!important;
+}
+.pricing-section{
+ position:relative;isolation:isolate;overflow:hidden;
+ border:1px solid rgba(117,230,220,.22)!important;border-radius:22px!important;
+ background:linear-gradient(145deg,rgba(14,30,45,.96),rgba(6,15,26,.97))!important;
+ box-shadow:var(--z-shadow)!important;
+}
+.pricing-section:before{
+ content:"";position:absolute;inset:0 0 auto;height:1px;pointer-events:none;
+ background:linear-gradient(90deg,transparent,rgba(117,230,220,.8),rgba(108,174,255,.55),transparent);
+}
+.pricing-section>h2,.pricing-section .section-title{
+ color:#f2f8fc;letter-spacing:-.04em;
+}
+.pricing-card{
+ position:relative;overflow:hidden;
+ background:linear-gradient(155deg,rgba(20,39,57,.94),rgba(8,19,31,.97))!important;
+ border:1px solid rgba(130,183,205,.20)!important;
+ box-shadow:inset 0 1px rgba(255,255,255,.045),0 18px 45px rgba(0,0,0,.16)!important;
+ transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;
+}
+.pricing-card:before{
+ content:"";position:absolute;inset:0 0 auto;height:1px;
+ background:linear-gradient(90deg,transparent,rgba(117,230,220,.36),transparent);
+}
+.pricing-card:hover{transform:translateY(-4px)!important;border-color:rgba(117,230,220,.48)!important;box-shadow:0 22px 48px rgba(0,0,0,.26),0 0 28px rgba(117,230,220,.08)!important}
+.pricing-card.pricing-featured{
+ background:linear-gradient(155deg,rgba(20,57,67,.96),rgba(10,27,43,.98))!important;
+ border-color:rgba(117,230,220,.55)!important;
+}
+footer,body>footer,.site-footer,.main-footer{
+ position:relative;background:linear-gradient(180deg,rgba(8,18,30,.94),rgba(4,10,18,.99))!important;
+ border-top:1px solid rgba(126,193,210,.17)!important;
+ color:#9db2c5!important;
+}
+footer a,.site-footer a,.main-footer a{color:#c1d6e4!important}
+footer a:hover,.site-footer a:hover,.main-footer a:hover{color:var(--z-aqua)!important}
+.modal-card,.modal-content,.dialog-card{
+ background:linear-gradient(145deg,rgba(16,32,49,.98),rgba(7,17,29,.99))!important;
+ border:1px solid rgba(117,230,220,.24)!important;
+ box-shadow:0 28px 90px rgba(0,0,0,.55),0 0 36px rgba(57,147,169,.08)!important;
+}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+ outline:2px solid rgba(117,230,220,.82)!important;outline-offset:3px;
+}
+@media(max-width:760px){
+ header,body>nav,.site-header,.main-header,.topbar,.navbar{backdrop-filter:blur(16px)}
+ .pricing-section{border-radius:16px!important}
+ .pricing-card:hover{transform:none!important}
+}
+\`;
+
 fs.writeFileSync(cssPath, css);
 console.log("Refonte visuelle ZERILYS appliquée aux sections inférieures et aux espaces entreprise.");
