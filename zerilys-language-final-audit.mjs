@@ -25,6 +25,7 @@ const missingFr=new Set(),missingEn=new Set();
 function decode(s){return s.replace(/&nbsp;/g," ").replace(/&amp;/g,"&").replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,"<").replace(/&gt;/g,">");}
 function check(value,where){
  const t=decode(value).replace(/\s+/g," ").trim();
+ if(t==="you@domain.com")return;
  if(!t||t.length>300||/[{}<>$]/.test(t)||/^https?:/i.test(t)||/^[a-z0-9_.-]+$/i.test(t)||/^[\\w.+-]+@[\\w.-]+\\.\\w+$/.test(t)||t.startsWith("This permanently removes your account"))return;
  if(englishWords.test(t)&&!frKeys.has(t))missingFr.add(where+": "+t);
  if((/[àâçéèêëîïôûùüÿœæ]/i.test(t)||frenchWords.test(t))&&!enKeys.has(t))missingEn.add(where+": "+t);
