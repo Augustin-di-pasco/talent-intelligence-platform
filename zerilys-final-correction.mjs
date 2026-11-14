@@ -145,12 +145,12 @@ for (const page of ["public/index.html","public/legal-notice.html","public/beta-
      ' };',
      ' if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();',
      '})();'
-   ].join("\\n")+"\\n";
+   ].join("\n")+"\n";
  }
  write("public/app.js",actionApp);
  let actionCss=read("public/styles.css");
  if(!actionCss.includes("ZERILYS plan action affordance")){
-   actionCss+="\\n/* ZERILYS plan action affordance */\\n.pricing-card{cursor:pointer}\\n.pricing-card:focus-visible{outline:2px solid rgba(103,228,223,.85);outline-offset:4px}\\n.pricing-card .zerilys-plan-action{display:inline-flex!important;align-items:center;justify-content:center;align-self:flex-start;margin-top:16px;padding:11px 15px;min-height:42px;border-radius:8px;text-decoration:none;font-size:11px;font-weight:700;white-space:normal}\\n.pricing-card .zerilys-plan-action:hover{filter:brightness(1.12);transform:translateY(-1px)}\\n.pricing-card .zerilys-plan-action:focus-visible{outline:2px solid #8de7df;outline-offset:3px}\\n@media(max-width:560px){.pricing-card .zerilys-plan-action{width:100%;justify-content:center}}\\n";
+   actionCss+="\n/* ZERILYS plan action affordance */\n.pricing-card{cursor:pointer}\\n.pricing-card:focus-visible{outline:2px solid rgba(103,228,223,.85);outline-offset:4px}\n.pricing-card .zerilys-plan-action{display:inline-flex!important;align-items:center;justify-content:center;align-self:flex-start;margin-top:16px;padding:11px 15px;min-height:42px;border-radius:8px;text-decoration:none;font-size:11px;font-weight:700;white-space:normal}\n.pricing-card .zerilys-plan-action:hover{filter:brightness(1.12);transform:translateY(-1px)}\n.pricing-card .zerilys-plan-action:focus-visible{outline:2px solid #8de7df;outline-offset:3px}\n@media(max-width:560px){.pricing-card .zerilys-plan-action{width:100%;justify-content:center}}\n";
  }
  write("public/styles.css",actionCss);
 
