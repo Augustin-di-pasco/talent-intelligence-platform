@@ -200,7 +200,7 @@ if (!removeIndexStripApp.includes("ZERILYS remove redundant lower-page index str
 /* ZERILYS remove redundant lower-page index strip */
 (() => {
   const labels = ["01 PROFIL", "02 RÉALISATIONS", "03 OPPORTUNITÉS", "04 PROJETS"];
-  const normalize = value => (value || "").replace(/\\s+/g, " ").trim().toLocaleUpperCase("fr");
+  const normalize = value => (value || "").replace(/\s+/g, " ").trim().toLocaleUpperCase("fr");
   const removeStrip = () => {
     const nodes = labels.map(label => [...document.querySelectorAll("body *")].find(el =>
       el.children.length === 0 && normalize(el.textContent) === label
@@ -266,7 +266,7 @@ footer .footer-brand,footer .brand,footer .footer-links,.site-footer .footer-bra
 write("public/styles.css",finalRepairCss);
 
 let finalRepairHtml = read("public/index.html");
-const oldPartnerNote = /<section class="employer-pricing-note" aria-label="Tarifs complémentaires">[\\s\\S]*?<\\/section>/;
+const oldPartnerNote = /<section class="employer-pricing-note" aria-label="Tarifs complémentaires">[\s\S]*?<\\/section>/;
 if (oldPartnerNote.test(finalRepairHtml)) {
  finalRepairHtml=finalRepairHtml.replace(oldPartnerNote,'<section class="employer-pricing-note" aria-label="Tarifs partenaires"><strong>Tarifs partenaires bêta :</strong> Solo : 29 € HT/mois · Team : 69 € HT/mois · Business : 139 € HT/mois. Prix garantis pendant 12 mois pour les partenaires pilotes. <strong>Offre Business standard :</strong> 179 € HT/mois ou 1 790 € HT/an. <strong>Offre Entreprise :</strong> sur devis.</section>');
 }
@@ -301,7 +301,7 @@ finalRepairApp+=String.raw`
   const note=document.querySelector(".employer-pricing-note");
   if(note){note.style.gridColumn="1 / -1";note.style.width="100%";note.style.maxWidth="1500px";note.style.margin="24px auto 0";note.style.boxSizing="border-box";note.textContent="Tarifs partenaires bêta : Solo 29 € HT/mois · Team 69 € HT/mois · Business 139 € HT/mois, prix garantis pendant 12 mois. Offre Business standard : 179 € HT/mois ou 1 790 € HT/an. Offre Entreprise : sur devis.";}
   const labels=["01 PROFIL","02 RÉALISATIONS","03 OPPORTUNITÉS","04 PROJETS"];
-  const norm=s=>(s||"").replace(/\\s+/g," ").trim().toLocaleUpperCase("fr");
+  const norm=s=>(s||"").replace(/\s+/g," ").trim().toLocaleUpperCase("fr");
   const leaves=[...document.querySelectorAll("body *")].filter(el=>el.children.length===0&&labels.includes(norm(el.textContent)));
   if(leaves.length===4){
    const rows=leaves.map(el=>{let n=el;while(n.parentElement&&n.parentElement!==document.querySelector("main"))n=n.parentElement;return n;});
