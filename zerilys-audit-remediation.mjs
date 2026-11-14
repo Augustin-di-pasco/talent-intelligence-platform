@@ -106,7 +106,7 @@ const profileTranslations={
   "VERIFIED WITH EVIDENCE": "ÉTAYÉE PAR DES PREUVES",
   "Exchange with the team": "Échanger avec l’équipe"
 };
-const block='  // ZERILYS_AUDIT_BILLING_LANGUAGE\n  Object.assign(fr,'+JSON.stringify(profileTranslations,null,2)+');\n  Object.assign(en,'+JSON.stringify(additions,null,2)+');\n';
+const block='  // ZERILYS_AUDIT_BILLING_LANGUAGE\n  Object.assign(fr,'+JSON.stringify(profileTranslations,null,2)+');\n  Object.assign(en,Object.fromEntries(Object.entries(profileTranslations).map(([source,translated])=>[translated,source])));\n  Object.assign(en,'+JSON.stringify(additions,null,2)+');\n';
 i18n=replace(i18n,'  let language = "fr";',block+'  let language = "fr";',"language dictionary");write("public/i18n.js",i18n);
 }
 let fr=read("public/beta-terms.html");
