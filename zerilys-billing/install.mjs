@@ -74,5 +74,3 @@ if(!i18n.includes("ZERILYS_BILLING_TRANSLATIONS")){
 }
 
 console.log("ZERILYS billing integration installed.");
-
-await import("../zerilys-employer-layout-repair.mjs");
