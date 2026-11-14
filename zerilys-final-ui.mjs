@@ -40,3 +40,11 @@ if(!languageFile.includes("ZERILYS profile translation completion")){
  languageFile=languageFile.replace("  const fr = {","  const fr = {\n    // ZERILYS profile translation completion\n"+rows);
 }
 write("public/i18n.js",languageFile);
+
+let pricing=read("public/index.html");
+pricing=pricing.replace('<p class="pricing-price">Sur invitation</p>','<p class="pricing-price">0 € · Bêta sur invitation</p>');
+pricing=pricing.replace('<p class="pricing-price">Gratuit</p>','<p class="pricing-price">0 € pendant la bêta</p>');
+write("public/index.html",pricing);
+let layout=read("public/styles.css");
+if(!layout.includes("ZERILYS desktop bento landing layout"))layout+='\n/* ZERILYS desktop bento landing layout */\n@media(min-width:1100px){\n body>main{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:20px;max-width:1560px;margin:0 auto;padding:0 24px}\n body>main>.candidate-hero,body>main>.signal-strip,body>main>#discover,body>main>#global-pulse,body>main>#for-recruiters,body>main>.trust-section,body>main>.closing{grid-column:1/-1;width:100%;max-width:none;margin:0}\n body>main>#projects{grid-column:1/span 6;width:100%;max-width:none;margin:0;padding:36px 30px;border:1px solid #91b4d52b;border-radius:22px;background:linear-gradient(145deg,#111d2be8,#0b1420eF)}\n body>main>#opportunities{grid-column:7/-1;width:100%;max-width:none;margin:0;padding:36px 30px;border:1px solid #91b4d52b;border-radius:22px;background:linear-gradient(145deg,#111d2be8,#0b1420eF)}\n body>main>#discover,body>main>#global-pulse,body>main>#for-recruiters{padding:clamp(30px,3.5vw,58px);border:1px solid #91b4d51f;border-radius:24px;background:linear-gradient(145deg,#101c2a88,#0b142055)}\n body>main>.signal-strip{margin:0;padding:12px 20px}\n body>main>.trust-section{max-width:none;padding:42px 58px;margin:0}\n body>main>.closing{padding:46px 20px 70px}\n}\n@media(min-width:1100px) and (max-width:1350px){body>main>#projects,body>main>#opportunities{padding:28px 22px}.project-layout{grid-template-columns:1fr}.project-intro{padding:24px}}\n@media(max-width:1099px){body>main{display:block}.section,.global-pulse,.trust-section,.closing{margin-inline:auto}}\n';
+write("public/styles.css",layout);
