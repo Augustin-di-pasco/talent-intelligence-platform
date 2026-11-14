@@ -14,6 +14,36 @@ for(const stale of [
 "Tarifs partenaires bêta : Solo 29 € HT/mois · Team 69 € HT/mois · Business 139 € HT/mois, prix garantis pendant 12 mois. Offre Business standard : 179 € HT/mois ou 1 790 € HT/an. Offre Entreprise : sur devis."
 ]) app=app.replaceAll(stale,corrected);
 if(/Aucun paiement en ligne n’est activé|Aucun paiement ni abonnement Stripe n’est actif|Tarifs partenaires bêta|Solo 29 € HT|Team 69 € HT|Business 139 € HT/.test(app))throw Error("Outdated billing copy remains in app.js");
+// Preserve the Stripe checkout controls from older visual scripts that used to rebuild
+// the pricing cards as static content or replace them with mailto links.
+const pricingStartMarker="    // Rebuild the four pricing cards as a compact, readable French price list.\n    const cards = [...document.querySelectorAll(\".pricing-card\")];";
+const pricingStart=app.indexOf(pricingStartMarker);
+const coreMarker='    const core = document.querySelector(".candidate-core");';
+const pricingEnd=app.indexOf(coreMarker,pricingStart);
+if(pricingStart<0||pricingEnd<0)throw Error("Legacy pricing rebuild markers not found");
+if(!app.slice(pricingStart,pricingEnd).includes('if(!document.querySelector("[data-billing-plan]"))')){
+ const legacy=app.slice(pricingStart,pricingEnd);
+ app=app.slice(0,pricingStart)+'    if(!document.querySelector("[data-billing-plan]")) {\n'+legacy+'    }\n'+app.slice(pricingEnd);
+}
+const consolidationMarker="/* ZERILYS premium content consolidation */";
+const consolidationAt=app.indexOf(consolidationMarker);
+const dataStart=app.indexOf("   const data=[",consolidationAt);
+const dataEnd=app.indexOf("\n };",dataStart);
+if(consolidationAt<0||dataStart<0||dataEnd<0)throw Error("Legacy premium pricing consolidation markers not found");
+if(!app.slice(dataStart,dataEnd).includes('if(!document.querySelector("[data-billing-plan]"))')){
+ const legacy=app.slice(dataStart,dataEnd);
+ app=app.slice(0,dataStart)+'   if(!document.querySelector("[data-billing-plan]")) {\n'+legacy+'\n   }\n'+app.slice(dataEnd);
+}
+const actionMarker="/* ZERILYS plan cards — guaranteed actions */";
+const actionAt=app.indexOf(actionMarker);
+const bindMarker=" const bind=()=>{";
+const bindAt=app.indexOf(bindMarker,actionAt);
+if(actionAt<0||bindAt<0)throw Error("Legacy mailto plan action markers not found");
+const guard='\\n  if(document.querySelector("[data-billing-plan]"))return;';
+if(!app.slice(bindAt,bindAt+bindMarker.length+guard.length+8).includes("data-billing-plan")){
+ const pos=bindAt+bindMarker.length;
+ app=app.slice(0,pos)+guard+app.slice(pos);
+}
 write("public/app.js",app);
 let i18n=read("public/i18n.js");
 if(!i18n.includes("ZERILYS_AUDIT_BILLING_LANGUAGE")){
