@@ -38,6 +38,13 @@ html = html.slice(0, opportunities.index) + html.slice(opportunities.index + opp
 const projectLayout = '<div class="project-layout"><div class="project-intro"><div class="big-number">∞</div><h3>From idea<br>to team.</h3><p>Meet people with complementary skills and move a project forward.</p><button class="btn primary" id="createProject">Create a project ↗</button></div><div class="project-list" id="projectList"><div class="loading-card">Finding open collaborations…</div></div></div>';
 if (!html.includes(projectLayout)) throw new Error("Homepage cleanup: the confirmed project intro markup changed; refusing an unsafe partial removal");
 html = html.replace(projectLayout, '<div class="project-layout"><div class="project-intro"><div class="big-number">∞</div><h3>From idea<br>to team.</h3></div></div>');
+const signalStrip = '<section class="signal-strip"><div><strong>01</strong><span>PROFILE</span></div><div><strong>02</strong><span>EVIDENCE</span></div><div><strong>03</strong><span>OPPORTUNITIES</span></div><div><strong>04</strong><span>PROJECTS</span></div></section>';
+if (!html.includes(signalStrip)) throw new Error("Homepage cleanup: the four-step signal strip was not found");
+html = html.replace(signalStrip, "");
+// Keep the private employer workspace and its offer-management form available, without restoring the public opportunities feed.
+if (!html.includes('<div class="company-team-workspace">')) throw new Error("Homepage cleanup: employer workspace not found");
+html = html.replace('<div class="company-team-workspace">', '<div class="company-team-workspace" id="opportunities">');
+
 const oldNav = '<nav aria-label="Navigation principale"><a href="#discover">Talents</a><a href="#opportunities">Opportunités</a><a href="#projects">Collaborations</a><a href="#global-pulse">Intelligence marché</a></nav>';
 const newNav = '<nav aria-label="Navigation principale"><a href="#discover">Talents</a><a href="#for-recruiters">Recrutement</a></nav>';
 if (!html.includes(oldNav)) throw new Error("Homepage cleanup: primary navigation markup changed; refusing to leave stale section links");
