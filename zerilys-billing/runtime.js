@@ -7,7 +7,7 @@ team_annual:{plan:"team",id:"price_1UbSAEPE44VJyRBnqFClUzFA"},
 business_monthly:{plan:"business",id:"price_1UbSAIPE44VJyRBnCJ61goKT"},
 business_annual:{plan:"business",id:"price_1UbSAJPE44VJyRBn6pF5H8Ab"}
 };
-export const configured=()=>!!(process.env.STRIPE_SECRET_KEY&&process.env.STRIPE_WEBHOOK_SECRET&&process.env.ZERIHLINK_PUBLIC_URL);
+export const configured=()=>process.env.STRIPE_BILLING_ENABLED==="true"&&!!(process.env.STRIPE_SECRET_KEY&&process.env.STRIPE_WEBHOOK_SECRET&&process.env.ZERIHLINK_PUBLIC_URL);
 async function stripe(path,method="GET",params={},key){
  const secret=process.env.STRIPE_SECRET_KEY;if(!secret)throw Error("BILLING_NOT_CONFIGURED");
  const headers={Authorization:"Bearer "+secret};const body=method==="GET"?undefined:new URLSearchParams(params).toString();
