@@ -216,8 +216,12 @@ for (const page of ["public/index.html","public/legal-notice.html","public/beta-
         const text = (clicked.getAttribute("data-query") || clicked.getAttribute("data-value") || clicked.textContent || "").trim();
         if (!text || text.length > 100 || clicked.matches("a[href^='#'],[role=tab]")) return;
         const cls = norm(clicked.className && String(clicked.className));
+        const inputRect = input.getBoundingClientRect();
+        const clickedRect = clicked.getBoundingClientRect();
+        const nearSearchField = clickedRect.top >= inputRect.bottom - 4 && clickedRect.top - inputRect.bottom < 190;
         const isSuggestion = clicked.matches("[role=option],.chip,.tag,[class*=suggest],[class*=keyword],[data-query],[data-value]")
-          || (clicked.parentElement && clicked.parentElement.matches("ul,ol,[class*=suggest],[class*=keyword],[class*=popular],[class*=title]"));
+          || (clicked.parentElement && clicked.parentElement.matches("ul,ol,[class*=suggest],[class*=keyword],[class*=popular],[class*=title]"))
+          || (nearSearchField && clicked.matches("button,a,[role=button]") && !clicked.closest("[class*=result],[class*=profile-card],[data-profile-id]"));
         if (!isSuggestion) return;
         event.preventDefault();
         input.value = text;
