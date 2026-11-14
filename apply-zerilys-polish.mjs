@@ -97,6 +97,20 @@ if (!css.includes("/* ZERILYS release polish: registration and pilot clarity */"
   ].join("\n");
   css += "\n" + cssAppend + "\n";
 }
+/* ZERILYS compact homepage + employer workspace layout */
+css += [
+  "",
+  "/* Employer workspace: use the available desktop width instead of squeezing each panel. */",
+  ".company-team-workspace#opportunities{display:grid!important;grid-template-columns:minmax(280px,1.15fr) minmax(220px,1fr) minmax(220px,1fr)!important;align-items:start;gap:clamp(14px,1.8vw,24px)!important;width:100%!important;max-width:none!important;margin:0 auto!important}",
+  ".company-team-workspace#opportunities>*{width:100%!important;min-width:0!important;max-width:none!important;box-sizing:border-box}",
+  ".company-team-workspace#opportunities form,.company-team-workspace#opportunities input,.company-team-workspace#opportunities select,.company-team-workspace#opportunities textarea{width:100%;max-width:100%;min-width:0;box-sizing:border-box}",
+  ".company-team-workspace#opportunities button{max-width:100%;white-space:normal}",
+  "section:has(>.company-team-workspace#opportunities){padding-bottom:clamp(28px,3vw,44px)!important}",
+  ".pricing-section{padding-top:clamp(32px,4vw,52px)!important}",
+  ".section{scroll-margin-top:84px}",
+  "@media(max-width:900px){.company-team-workspace#opportunities{grid-template-columns:repeat(2,minmax(0,1fr))!important}}",
+  "@media(max-width:620px){.company-team-workspace#opportunities{grid-template-columns:minmax(0,1fr)!important;gap:14px!important}.company-team-workspace#opportunities>*{padding:16px!important}.pricing-section{padding-top:28px!important}}"
+].join("\\n") + "\\n";
 write("public/styles.css", css);
 
 let i18n = read("public/i18n.js");
