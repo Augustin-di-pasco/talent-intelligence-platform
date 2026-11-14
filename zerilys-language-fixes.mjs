@@ -86,5 +86,8 @@ if (!source.includes("ZERILYS complete bilingual language fixes")) {
   source=source.slice(0,at)+block+source.slice(at);
 }
 source=source.replace('const attrs = ["placeholder", "aria-label", "title", "alt"];','const attrs = ["placeholder", "aria-label", "aria-description", "title", "alt"];');
+source=source.replace("La plateforme spécialisée pour identifier, valoriser et recruter les talents en finance, intelligence artificielle et data.","La plateforme spécialisée pour identifier, valoriser et recruter les talents en finance, intelligence artificielle et données.");
+source=source.replace("The specialist talent platform for finance, AI and data.","The specialist talent platform for finance, artificial intelligence and data.");
+source=source.replace('document.title = language === "fr" ? "ZERILYS — Talent Intelligence" : "ZERILYS — Talent Intelligence";','document.title = language === "fr" ? "ZERILYS — Intelligence des talents" : "ZERILYS — Talent Intelligence";');
 fs.writeFileSync(file,source);
 console.log("ZERILYS final language coverage patch applied.");
