@@ -42,6 +42,10 @@ const oldNav = '<nav aria-label="Navigation principale"><a href="#discover">Tale
 const newNav = '<nav aria-label="Navigation principale"><a href="#discover">Talents</a><a href="#for-recruiters">Recrutement</a></nav>';
 if (!html.includes(oldNav)) throw new Error("Homepage cleanup: primary navigation markup changed; refusing to leave stale section links");
 html = html.replace(oldNav, newNav);
+html = html.replace(/<a\\b(?=[^>]*\\bhref="#opportunities")[^>]*>[\\s\\S]*?<\\/a>/g, "");
+html = html.replace(/<a\\b(?=[^>]*\\bhref="#global-pulse")[^>]*>[\\s\\S]*?<\\/a>/g, "");
+console.log("HOME_STEP_CLASSES", [...html.matchAll(/class="[^"]*(?:step|workflow|progress|journey)[^"]*"/gi)].map(m=>m[0]).join(" | "));
+
 // Diagnostic for the four-step strip: report its source container before the final targeted removal.
 for (const sourceName of ["index.html","app.js","i18n.js"]) {
   const source = sourceName === "index.html" ? html : read("public/" + sourceName);
