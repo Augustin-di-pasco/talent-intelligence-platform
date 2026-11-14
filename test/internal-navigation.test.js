@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import {fileURLToPath} from "node:url";
-const root=path.dirname(fileURLToPath(import.meta.url)),pub=path.join(root,"public"),html=fs.readFileSync(path.join(pub,"index.html"),"utf8");
+const root=path.dirname(path.dirname(fileURLToPath(import.meta.url))),pub=path.join(root,"public"),html=fs.readFileSync(path.join(pub,"index.html"),"utf8");
 test("every internal page and section link resolves to an existing destination",()=>{
  const ids=new Set([...html.matchAll(/\bid=["']([^"']+)["']/g)].map(m=>m[1]));
  for(const match of html.matchAll(/<a\b[^>]*href=["']([^"']+)["'][^>]*>/g)){
