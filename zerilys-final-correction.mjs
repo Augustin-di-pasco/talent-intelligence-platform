@@ -120,4 +120,15 @@ if (!app.includes("ZERILYS final premium corrections — deterministic")) {
 `;
 }
 write("public/app.js", app);
+
+write("public/robots.txt", "User-agent: *\\nDisallow: /\\n");
+for (const page of ["public/index.html","public/legal-notice.html","public/beta-terms.html","public/privacy-notice.html"]) {
+  const full = path.join(root, page);
+  if (!fs.existsSync(full)) continue;
+  let document = fs.readFileSync(full, "utf8");
+  if (!document.includes('name="robots"')) {
+    document = document.replace(/<head([^>]*)>/i, '<head$1>\\n<meta name="robots" content="noindex, nofollow, noarchive">');
+    fs.writeFileSync(full, document);
+  }
+}
 console.log("ZERILYS final premium correction layer applied.");
