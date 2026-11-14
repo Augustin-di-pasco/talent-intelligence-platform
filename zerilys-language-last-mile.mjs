@@ -93,7 +93,16 @@ if(server.includes(inviteNeedle))server=server.replace(inviteNeedle,inviteReplac
 const singleInviteNeedle='await sendTransactionalEmail({to:email,subject:"Your ZERILYS private beta invitation",text,html});';
 const singleInviteReplacement='const emailLanguage = u.language === "en" ? "en" : "fr"; const localizedText = emailLanguage === "en" ? text : "Vous êtes invité(e) à rejoindre la bêta privée de ZERILYS.\\n\\nVotre code d’invitation à usage unique : " + raw + "\\n\\nOuvrez " + appUrl + ", choisissez « Créer un compte » et saisissez ce code. Il expire dans " + days + " jour(s). Si vous n’attendiez pas cette invitation, ignorez ce message."; const localizedHtml = emailLanguage === "en" ? html : "<p>Vous êtes invité(e) à rejoindre la bêta privée de ZERILYS.</p><p>Votre code d’invitation à usage unique :</p><p><code>" + escapeHtml(raw) + "</code></p><p>Ouvrez <a href=\\"" + escapeHtml(appUrl) + "\\">" + escapeHtml(appUrl) + "</a>, choisissez « Créer un compte » et saisissez ce code. Il expire dans " + days + " jour(s).</p><p>Si vous n’attendiez pas cette invitation, ignorez ce message.</p>"; await sendTransactionalEmail({to:email,subject:emailLanguage === "en" ? "Your ZERILYS private beta invitation" : "Votre invitation à la bêta privée ZERILYS",text:localizedText,html:localizedHtml});';
 if(server.includes(singleInviteNeedle))server=server.replace(singleInviteNeedle,singleInviteReplacement);
+
 fs.writeFileSync(path.join(root,"src/server.js"),server);
+const appSource=fs.readFileSync(path.join(root,"public/app.js"),"utf8");
+for(const term of ["zerilys:languagechange","/api/me/language","toLocaleDateString","toLocaleString","Intl.DateTimeFormat"]){
+ const i=appSource.indexOf(term);
+ if(i>=0)console.log("ZERILYS_LANGUAGE_RUNTIME_"+term.replace(/[^a-z]/gi,"_"),appSource.slice(Math.max(0,i-250),Math.min(appSource.length,i+650)));
+}
+const langRoute=server.indexOf("/api/me/language");
+if(langRoute>=0)console.log("ZERILYS_LANGUAGE_SERVER_ROUTE",server.slice(Math.max(0,langRoute-250),Math.min(server.length,langRoute+700)));
+
 console.log("ZERILYS transactional email localization",JSON.stringify({reset:server.includes('subject:emailLanguage === "en" ? "Reset your ZERILYS password"'),batchInvite:server.includes('to:item.invitation.email,subject:emailLanguage'),singleInvite:server.includes('to:email,subject:emailLanguage')}));
 
 for(const term of ["Password reset token:","Your one-time invitation token:","New candidate interest","Application status updated"]){
