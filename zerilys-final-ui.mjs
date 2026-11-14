@@ -190,3 +190,38 @@ if (!employerCss.includes("ZERILYS employer pricing clarity")) employerCss += `
 .employer-pricing-note strong{color:#e9f0f7;font-weight:650}
 `;
 write("public/styles.css", employerCss);
+
+
+// Remove the redundant four-step index strip below the original candidate hero.
+// The main content grid then closes naturally, without reserving a blank slot.
+let removeIndexStripApp = read("public/app.js");
+if (!removeIndexStripApp.includes("ZERILYS remove redundant lower-page index strip")) {
+  removeIndexStripApp += String.raw`
+/* ZERILYS remove redundant lower-page index strip */
+(() => {
+  const labels = ["01 PROFIL", "02 RÉALISATIONS", "03 OPPORTUNITÉS", "04 PROJETS"];
+  const normalize = value => (value || "").replace(/\\s+/g, " ").trim().toLocaleUpperCase("fr");
+  const removeStrip = () => {
+    const nodes = labels.map(label => [...document.querySelectorAll("body *")].find(el =>
+      el.children.length === 0 && normalize(el.textContent) === label
+    ));
+    if (nodes.some(node => !node)) return;
+    let parent = nodes[0].parentElement;
+    while (parent && parent !== document.body && !nodes.every(node => parent.contains(node))) parent = parent.parentElement;
+    if (!parent || parent === document.body || parent.tagName === "MAIN") return;
+    const text = normalize(parent.textContent);
+    if (!labels.every(label => text.includes(label))) return;
+    const rowNodes = nodes.map(node => {
+      let row = node;
+      while (row.parentElement && row.parentElement !== parent) row = row.parentElement;
+      return row;
+    });
+    if (new Set(rowNodes).size !== 4) return;
+    parent.remove();
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", removeStrip, { once: true });
+  else removeStrip();
+})();
+`;
+}
+write("public/app.js", removeIndexStripApp);
