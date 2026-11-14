@@ -97,6 +97,58 @@ if (!css.includes("/* ZERILYS release polish: registration and pilot clarity */"
   ].join("\n");
   css += "\n" + cssAppend + "\n";
 }
+/* ZERILYS employer workspace: three equal, fluid columns across the available width. */
+css += `
+/* Employer workspace width and form repair */
+html body main .company-team-workspace#opportunities{
+ display:grid!important;
+ grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr)!important;
+ align-items:start!important;
+ gap:clamp(18px,2vw,30px)!important;
+ width:100%!important;
+ max-width:none!important;
+ min-width:0!important;
+ margin-inline:0!important;
+ box-sizing:border-box!important;
+}
+html body main .company-team-workspace#opportunities > *{
+ display:block!important;
+ width:100%!important;
+ max-width:none!important;
+ min-width:0!important;
+ box-sizing:border-box!important;
+}
+html body main .company-team-workspace#opportunities form{
+ display:grid!important;
+ grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ gap:12px!important;
+ width:100%!important;
+ max-width:none!important;
+ min-width:0!important;
+}
+html body main .company-team-workspace#opportunities form > *{
+ width:100%!important;
+ max-width:none!important;
+ min-width:0!important;
+ box-sizing:border-box!important;
+}
+html body main .company-team-workspace#opportunities textarea{
+ grid-column:1/-1!important;
+ min-height:120px!important;
+}
+html body main .company-team-workspace#opportunities input,
+html body main .company-team-workspace#opportunities select{
+ min-height:48px!important;
+}
+@media(max-width:900px){
+ html body main .company-team-workspace#opportunities{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:620px){
+ html body main .company-team-workspace#opportunities{grid-template-columns:minmax(0,1fr)!important}
+ html body main .company-team-workspace#opportunities form{grid-template-columns:minmax(0,1fr)!important}
+ html body main .company-team-workspace#opportunities textarea{grid-column:auto!important}
+}
+`;
 /* ZERILYS spacing correction: compact section rhythm without changing the employer form layout. */
 css += "\n/* ZERILYS compact section rhythm */\n.pricing-section{padding-top:clamp(22px,2.4vw,34px)!important;padding-bottom:clamp(28px,3vw,42px)!important}\n.section+.section{margin-top:0!important}\n.section .section-head{margin-bottom:clamp(14px,1.6vw,20px)}\n";
 write("public/styles.css", css);
