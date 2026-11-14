@@ -30,4 +30,27 @@ let app=read("public/app.js");
 if(!app.includes("refreshBillingState()"))app+='\nasync function refreshBillingState(){const s=document.getElementById("billingStatus"),m=document.getElementById("billingManage");if(!me||me.accountType!=="company"){if(s)s.textContent=me?.accountType==="candidate"?"Accès candidat gratuit.":"Abonnements réservés aux comptes entreprise.";if(m)m.classList.add("hidden");return;}try{const r=await api("/billing/status"),b=r.billing||{};if(s)s.textContent=["active","trialing"].includes(b.status)?"Abonnement "+b.plan+" actif":"Aucun abonnement actif.";if(m)m.classList.toggle("hidden",!b.canManage);}catch{}}\ndocument.addEventListener("click",async e=>{const p=e.target.closest("[data-billing-plan]");if(p){document.querySelectorAll("[data-billing-details]").forEach(x=>x.classList.toggle("hidden",x.dataset.billingDetails!==p.dataset.billingPlan));return;}const b=e.target.closest("[data-billing-price]");if(b){if(!me){openAuth("register");return;}if(me.accountType!=="company"){toast("Les abonnements sont réservés aux comptes entreprise. L’accès candidat reste gratuit.");return;}b.disabled=true;try{const r=await api("/billing/checkout",{method:"POST",body:JSON.stringify({priceKey:b.dataset.billingPrice})});location.assign(r.url);}catch(x){toast(x.message);b.disabled=false;}return;}if(e.target.closest("#billingManage")){try{const r=await api("/billing/portal",{method:"POST",body:JSON.stringify({})});location.assign(r.url);}catch(x){toast(x.message);}}});\n';
 app=app.replace("authUI();if(me.consentRequired){","authUI();refreshBillingState();if(me.consentRequired){");write("public/app.js",app);
 let css=read("public/styles.css");if(!css.includes("ZERILYS billing checkout"))css+='\n/* ZERILYS billing checkout */\n.zerilys-billing-grid .pricing-card{display:flex;flex-direction:column;align-items:flex-start;gap:12px}.billing-options{width:100%;padding-top:12px;border-top:1px solid rgba(255,255,255,.1)}.billing-options button{width:100%}.billing-options.hidden{display:none}\n';write("public/styles.css",css);
+
+const billingTest=[
+"import test from 'node:test';",
+"import assert from 'node:assert/strict';",
+"import crypto from 'node:crypto';",
+"import {PRICES,verifyStripeSignature,processStripeEvent,active,createCheckoutSession} from '../src/billing.js';",
+"test('six approved Stripe recurring prices are allowlisted',()=>{assert.equal(Object.keys(PRICES).length,6);assert.equal(PRICES.solo_monthly.id,'price_1UbSA7PE44VJyRBnrLHv3Ukq');assert.equal(PRICES.solo_annual.id,'price_1UbSA9PE44VJyRBn1j8IfIFy');assert.equal(PRICES.team_monthly.id,'price_1UbSACPE44VJyRBnl6QuhRQN');assert.equal(PRICES.team_annual.id,'price_1UbSAEPE44VJyRBnqFClUzFA');assert.equal(PRICES.business_monthly.id,'price_1UbSAIPE44VJyRBnCJ61goKT');assert.equal(PRICES.business_annual.id,'price_1UbSAJPE44VJyRBn6pF5H8Ab');});",
+"test('Stripe signature validates exact payload and rejects tampering',()=>{const secret='whsec_test',raw=Buffer.from('{\\\"id\\\":\\\"evt_1\\\"}'),t=Math.floor(Date.now()/1000),sig=crypto.createHmac('sha256',secret).update(t+'.').update(raw).digest('hex');assert.equal(verifyStripeSignature(raw,'t='+t+',v1='+sig,secret),true);assert.equal(verifyStripeSignature(Buffer.from(raw.toString()+' '),'t='+t+',v1='+sig,secret),false);});",
+"test('subscription webhooks grant and revoke paid access idempotently',async()=>{const u={id:'co_1',accountType:'company'},store={state:{users:[u],billingEvents:[]},async save(){}};const event={id:'evt_sub',type:'customer.subscription.updated',data:{object:{id:'sub_1',customer:'cus_1',status:'active',metadata:{zerilys_user_id:u.id,zerilys_plan:'solo'},items:{data:[{price:{id:PRICES.solo_monthly.id}}]}}}};await processStripeEvent(event,store);assert.equal(active(u),true);await processStripeEvent(event,store);assert.equal(store.state.billingEvents.length,1);await processStripeEvent({id:'evt_del',type:'customer.subscription.deleted',data:{object:{id:'sub_1',customer:'cus_1',status:'canceled',metadata:{zerilys_user_id:u.id},items:{data:[]}}}},store);assert.equal(active(u),false);});",
+"test('checkout refuses candidate accounts and never accepts arbitrary prices',async()=>{await assert.rejects(createCheckoutSession({id:'cand',accountType:'candidate'},'solo_monthly'),/COMPANY_ACCOUNT_REQUIRED/);await assert.rejects(createCheckoutSession({id:'co',accountType:'company'},'unknown'),/INVALID_PRICE_SELECTION/);});"
+].join("\n");
+write("test/billing.test.js",billingTest);
+const pricingTest=[
+"import test from 'node:test';",
+"import assert from 'node:assert/strict';",
+"import fs from 'node:fs';",
+"const read=n=>fs.readFileSync(new URL('../'+n,import.meta.url),'utf8');",
+"test('approved subscription prices are shown only after selecting one of the three plans',()=>{const html=read('public/index.html');for(const x of ['data-billing-plan=\\\"solo\\\"','data-billing-plan=\\\"team\\\"','data-billing-plan=\\\"business\\\"','39 € HT / mois','390 € HT / an','89 € HT / mois','890 € HT / an','179 € HT / mois','1 790 € HT / an','L’accès candidat reste gratuit'])assert.ok(html.includes(x),x);});",
+"test('billing UI calls the authenticated server checkout and portal',()=>{const app=read('public/app.js');assert.match(app,/billing\\\\/checkout/);assert.match(app,/billing\\\\/portal/);});",
+"test('no alternative beta price grid is exposed',()=>{assert.doesNotMatch(read('public/index.html'),/119 €|349 €|29 €|69 €|139 €/);});"
+].join("\n");
+write("test/employer-offer-packaging-1.3.test.js",pricingTest);
+
 console.log("ZERILYS billing integration installed.");
