@@ -333,3 +333,6 @@ write("public/styles.css", launchCss);
  write("public/styles.css", finalCss);
  
 console.log("ZERILYS public-beta legal and candidate-profile layer applied.");
+
+// Apply the final interface corrections after the source overlay.
+await import("./zerilys-final-ui.mjs");
